@@ -1,3 +1,11 @@
 有时候windows下编辑的shell脚本在linux上执行会出现莫名的错误，转换一下格式即可
 yum -y install dos2unix
 dos2unix *.sh
+
+交互过程使用管道的方式，自动输入yes
+[root@localhost ~]# yes | cp filename new/filename  
+linux默认
+[root@localhost ~]# alias 
+alias cp='cp -i'
+
+\cp 取消alias
