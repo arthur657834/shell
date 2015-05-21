@@ -1,0 +1,3 @@
+有时候windows下编辑的shell脚本在linux上执行会出现莫名的错误，转换一下格式即可
+yum -y install dos2unix
+dos2unix **.sh
