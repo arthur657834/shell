@@ -1,0 +1,5 @@
+单行注释 #
+整段注释 
+: << COMMENTBLOCK
+   shell脚本代码段
+COMMENTBLOCK
