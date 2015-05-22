@@ -9,3 +9,19 @@ linux默认
 alias cp='cp -i'
 
 \cp 取消alias
+
+source不是直接执行一个文件，而是从一个文本文件里面读命令行，然后执行这些命令
+. test.sh 《=》source test.sh 
+可以使用在shell调用shell
+
+DATE=$(date +%Y%m%d) 
+获取明天的日期
+date -d next-day +%Y%m%d
+获取昨天的日期
+date -d last-day +%Y%m%d
+获取上个月的年和月
+date -d last-month +%Y%m
+获取下个月的年和月
+date -d next-month +%Y%m
+获取明年的年份
+date -d next-year +%Y

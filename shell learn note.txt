@@ -1,0 +1,226 @@
+set命令有时间去看看，还有echo
+
+1.if ... elif ... else ... fi 语句
+
+if [ expression 1 ]
+then
+   Statement(s) to be executed if expression 1 is true
+elif [ expression 2 ]
+then
+   Statement(s) to be executed if expression 2 is true
+elif [ expression 3 ]
+then
+   Statement(s) to be executed if expression 3 is true
+else
+   Statement(s) to be executed if no expression is true
+fi
+
+2.case esac语句
+
+case $aNum in
+1) echo 'You select 1'
+;;
+2) echo 'You select 2'
+;;
+3) echo 'You select 3'
+;;
+4) echo 'You select 4'
+;;
+*) echo 'You do not select a number between 1 to 4'
+;;
+esac
+
+3.for
+for 变量 in 列表
+do
+    command1
+    command2
+    ...
+    commandN
+done
+
+for ((i=1;i<=10;i++))
+do
+   echo "num is $i"
+done
+
+4.while
+while command
+do
+   Statement(s) to be executed if command is true
+done
+
+死循环  : 冒号：内建空指令，返回值为0
+while :; do
+    echo looping...
+done
+
+5.until循环:
+
+until command
+do
+   Statement(s) to be executed until command is true
+done
+
+6.自定义函数：
+function_name () {
+    list of commands
+    [ return value ]
+}
+
+fuction_name () {
+    command1
+    ....
+}
+
+7.执行结果赋值给变量
+curdir=$(pwd)
+curdir=`pw`
+
+8.$(()) 做数学运算用 
+$(( a+b*c ))
+** 次方运算 2**3=8
+
+9.数组
+(1) array=(var1 var2 var3 ... varN)
+(2) array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)
+(3) array[0]=var1
+    arrya[1]=var2
+    ...
+    array[n]=varN
+
+删除数据元素
+unset SEASON[2]
+ 
+计算数组的长度:
+${#array}
+${#array[0]}
+
+计算数组元素个数：
+${#array[@]}  或者  ${#array[*]}
+
+遍历数组：
+filename=(`ls`)
+for var in ${filename[@]};do
+echo $var
+done
+
+数组的提取：
+array=( [0]=one [1]=two [2]=three [3]=four )
+${array[@]:1} # two three four,除掉第一个元素后所有元素，那么${array[@]:0}表示所有元素
+${array[@]:0:2} # one two
+${array[@]:1:2} # two three
+
+10.shell的特殊变量
+ignoreeof
+用来禁止使用ctrl+d来退出shell
+
+noclobber
+noclobber变量可以在重定向输出时保护已存在的文件，防止被意外地覆盖。
+
+noglob
+设置noglob变量后，shell将不扩展文件名中一些特殊的字符或字符串
+ls answer?输出结果为answer?
+
+$ set –o noclobber // 使noclobber变量开
+$ set +o noclobber // 使noclobber变量关
+
+; ： 在前一个命令结束时，而忽略其返回值，继续执行下一个命令。
+&& ：在前一个命令结束时，若返回值为 true，继续执行下一个命令。
+|| ：在前一个命令结束时，若返回值为 false，继续执行下一个命令。
+!：  执行 history 列表中的命令 ex. !72
+
+file=/dir1/dir2/dir3/my.file.txt （同样适用于数组）
+${file#*/}：		拿掉第一条 / 及其左边的字符串：dir1/dir2/dir3/my.file.txt
+${file##*/}：		拿掉最后一条 / 及其左边的字符串：my.file.txt
+${file#*.}：		拿掉第一个 . 及其左边的字符串：file.txt
+${file##*.}：		拿掉最后一个 . 及其左边的字符串：txt
+${file%/*}：		拿掉最后条 / 及其右边的字符串：/dir1/dir2/dir3
+${file%%/*}：		拿掉第一条 / 及其右边的字符串：(空值)
+${file%.*}：		拿掉最后一个 . 及其右边的字符串：/dir1/dir2/dir3/my.file
+${file%%.*}：		拿掉第一个 . 及其右边的字符串：/dir1/dir2/dir3/my
+
+${array[@] /o/m}#第一个匹配到的，会被删除
+${array[@] //o/m} #所有匹配到的，都会被删除
+${array[@] //o/}#没有指定替换子串，则删除匹配到的子符
+${array[@] /#o/k} #替换字符串前端子串 ex:one
+${array[@] /%o/k} #替换字符串后端子串 ex:two
+
+记忆的方法为：
+
+# 是去掉左边(在鉴盘上 # 在 $ 之左边)
+% 是去掉右边(在鉴盘上 % 在 $ 之右边)
+单一符号是最小匹配﹔两个符号是最大匹配。
+
+${file:0:5}：提取最左边的 5 个字节：/dir1
+${file:5:5}：提取第 5 个字节右边的连续 5 个字节：/dir2
+
+
+${var}	 				变量本来的值
+${var:-word}	  如果变量 var 为空或已被删除(unset)，那么返回 word，但不改变 var 的值。
+${var-word}	  如果变量 var 为空，那么返回 word，但不改变 var 的值。
+有没有：的区别就是var是否被set过
+${var:=word}	  如果变量 var 为空或已被删除(unset)，那么返回 word，并将 var 的值设置为 word。
+${var:+word}	  如果变量 var 被定义，那么返回 word，但不改变 var 的值。
+${var:?message}	如果变量 var 为空或已被删除(unset)，那么将消息 message 送到标准错误输出，可以用来检测变量 var 是否可以被正常赋值。若此替换出现在Shell脚本中，那么脚本将停止运行。
+
+$0	 						当前脚本的文件名
+$n	 						传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。
+$#	 						传递给脚本或函数的参数个数。
+$*	 						传递给脚本或函数的所有参数。 ("a b c")
+$@	 						传递给脚本或函数的所有参数。被双引号(" ")包含时，与 $* 稍有不同，("a" "b" "c")
+$?	 						上个命令的退出状态，或函数的返回值。
+$$	 						当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。
+
+-eq	 						检测两个数是否相等，相等返回 true。	 [ $a -eq $b ] 返回 true。
+-ne	 						检测两个数是否相等，不相等返回 true。	 [ $a -ne $b ] 返回 true。
+-gt	 						检测左边的数是否大于右边的，如果是，则返回 true。	 [ $a -gt $b ] 返回 false。
+-lt	 						检测左边的数是否小于右边的，如果是，则返回 true。	 [ $a -lt $b ] 返回 true。
+-ge	 						检测左边的数是否大等于右边的，如果是，则返回 true。	 [ $a -ge $b ] 返回 false。
+-le	 						检测左边的数是否小于等于右边的，如果是，则返回 true。	 [ $a -le $b ] 返回 true。
+
+!	   						非运算，表达式为 true 则返回 false，否则返回 true。	 [ ! false ] 返回 true。
+-o	 						或运算，有一个表达式为 true 则返回 true。	 [ $a -lt 20 -o $b -gt 100 ] 返回 true。
+-a	 						与运算，两个表达式都为 true 才返回 true。	 [ $a -lt 20 -a $b -gt 100 ] 返回 false。
+
+=	   						检测两个字符串是否相等，相等返回 true。	 [ $a = $b ] 返回 false。
+!=	 						检测两个字符串是否相等，不相等返回 true。	 [ $a != $b ] 返回 true。
+-z	 						检测字符串长度是否为0，为0返回 true。	 [ -z $a ] 返回 false。
+-n	 						检测字符串长度是否为0，不为0返回 true。	 [ -z $a ] 返回 true。
+str	 						检测字符串是否为空，不为空返回 true。	 [ $a ] 返回 true。
+         				
+-b file	 				检测文件是否是块设备文件，如果是，则返回 true。	 [ -b $file ] 返回 false。
+-c file	 				检测文件是否是字符设备文件，如果是，则返回 true。	 [ -b $file ] 返回 false。
+-d file	 				检测文件是否是目录，如果是，则返回 true。	 [ -d $file ] 返回 false。
+-f file	 				检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。	 [ -f $file ] 返回 true。
+-g file	 				检测文件是否设置了 SGID 位，如果是，则返回 true。	 [ -g $file ] 返回 false。
+-k file	 				检测文件是否设置了粘着位(Sticky Bit)，如果是，则返回 true。	 [ -k $file ] 返回 false。
+-p file	 				检测文件是否是具名管道，如果是，则返回 true。	 [ -p $file ] 返回 false。
+-u file	 				检测文件是否设置了 SUID 位，如果是，则返回 true。	 [ -u $file ] 返回 false。
+-r file	 				检测文件是否可读，如果是，则返回 true。	 [ -r $file ] 返回 true。
+-w file	 				检测文件是否可写，如果是，则返回 true。	 [ -w $file ] 返回 true。
+-x file	 				检测文件是否可执行，如果是，则返回 true。	 [ -x $file ] 返回 true。
+-s file	 				检测文件是否为空（文件大小是否大于0），不为空返回 true。	 [ -s $file ] 返回 true。
+-e file	 				检测文件（包括目录）是否存在，如果是，则返回 true。	 [ -e $file ] 返回 true。
+
+command >file	  将输出重定向到 file。
+command <file	  将输入重定向到 file。
+command >>file	将输出以追加的方式重定向到 file。
+n > file	      将文件描述符为 n 的文件重定向到 file。
+n >> file	      将文件描述符为 n 的文件以追加的方式重定向到 file。
+n >& m	        将输出文件 m 和 n 合并。
+n <& m	        将输入文件 m 和 n 合并。
+<< tag	        将开始标记 tag 和结束标记 tag 之间的内容作为输入。
+ex:
+/usr/bin/ftp -i -n << FTP
+open 192.168.100.9
+user test test
+cd /DER/Firmware/Beta
+mkdir $der_dir
+cd $der_dir
+mput der*
+bye
+FTP
+
+
+

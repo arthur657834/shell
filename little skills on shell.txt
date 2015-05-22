@@ -1,0 +1,107 @@
+1.输出A B 不一致的数据
+#!/bin/bash
+A="aa bb cc dd ee"
+B="AA bb CC dd ee"
+
+AA=($A)
+BB=($B)
+for i in `seq 0 ${#AA[@]}`;do
+  if [ ${AA[$i]} != ${BB[$i]} ];then
+    X[$i]=${AA[$i]}
+  fi
+done
+echo ${X[@]}
+
+2.函数中输出函数名：$FUNCNAME
+function log() {
+    echo ${FUNCNAME[@]} #输出log action main
+echo $FUNCNAME #输出log
+}
+function action() {
+    log
+}
+action
+
+3.循环中的跳转：continue [n] 
+
+首先需要声明的是continue可用于子函数，跳转到父函数中的指定层次循环。如：
+	就是跳转到x层
+function son() {
+    for z in 1 2 3; do
+        if true; then
+            echo $x,$y,$z
+            continue 3
+        fi
+    done
+}
+function father() {
+    for x in 1 2 3; do
+        for y in 1 2 3; do
+            son
+        done
+    done
+}
+father
+
+n的值从1开始（不写默认为1，数字越大则层数越高，超过总循环层数时值为最大层数）；
+
+以上代码中只有最上层"x"会正常循环完，其余子层都在首轮跳出，此时n的最大值为3,跳转到x；
+
+若在son后加一个“&”使其在后台运行，此时continue能控制y、z两层，但不能跳转到x，即n的最大值为2。
+
+不会的话，修改一下continue 3->continue 2,就知道怎么用了
+
+
+4.变量间接引用（indirect expansion）
+a=1
+b=a
+echo ${!b}
+eval echo \$$b  输出都是1
+
+像删除变量一样，删除函数也可以使用 unset 命令，不过要加上 .f 选项
+
+5.进入目录并打包文件
+cd /source/directory && tar cf -
+
+6.猜数
+#!/bin/sh
+echo "Please input the num (1~~10): "
+read num
+while [[ $num != 4 ]]
+do
+if [ $num -lt 4 ]
+then
+ echo "Too small ,Try again.."
+ read num
+ elif [ $num -gt 4 ]
+ then
+ echo "Too big ,Try again.. "
+ read num
+ else
+ exit 0
+ fi
+ done
+echo "Yes ,you are right !!"
+
+重点是exit 0的用法
+
+7.使用tr命令将文件中的回车转换成空格：
+[root@pps ~]# cat /etc/shells | tr "\n" " " > /tmp/tmp.file
+ 
+将文件中内容给数组赋值：(碰到第一个回车符之前的内容)
+[root@pps ~]# read -a SHELLS < /tmp/tmp.file
+ 
+查看数组赋值情况：
+[root@pps ~]# set | grep "SHELLS"
+SHELLS=([0]="/bin/sh" [1]="/bin/bash" [2]="/sbin/nologin" [3]="/bin/tcsh" [4]="/bin/csh" [5]="/bin/ksh")
+
+8.ssh自动登录
+expect autolog.sh
+
+#!/usr/bin/expect -f
+set timeout 19
+spawn ssh root@192.168.18.167
+expect "password:"
+send "657834\r"
+expect "]*"
+interact

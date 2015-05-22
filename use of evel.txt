@@ -1,0 +1,13 @@
+eval:重新运算求出参数的内容
+ex1:
+pipe="|"
+eval ls $pipe wc -l
+​
+ex2:
+test.txt内容：hello shell world!
+
+myfile="cat test.txt"
+
+(1)echo $myfile　　#result:cat test.txt
+
+(2)eval echo $myfile　　#result:hello shell world!
