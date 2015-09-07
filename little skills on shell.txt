@@ -105,3 +105,16 @@ expect "password:"
 send "657834\r"
 expect "]*"
 interact
+
+9.shell 不回显输入
+#!/bin/bash
+stty -echo
+read pass < /dev/tty
+stty echo
+echo --------------------------
+echo $pass
+
+10.打开自动跟踪功能
+shell脚本中加入
+set -x
+set +x

@@ -1,0 +1,30 @@
+1.
+cat 1.txt | tr "abc" "xyz" > new_file
+将文件file中出现的"abc"替换为"xyz"
+
+2.
+cat file | tr [a-z] [A-Z] > new_file
+小写 --> 大写
+
+cat file | tr [A-Z] [a-z] > new_file
+大写 --> 小写
+
+cat file | tr [0-9] [a-j] > new_file
+把文件中的数字0-9替换为a-j
+
+3.
+cat file | tr -d "Snail" > new_file
+删除文件file中出现的"Snail"字符,是在file文件中出现的'S','n','a','i','l'字符都会被删除！而不是紧紧删除出现的"Snail”字符串。
+
+4.
+cat file | tr -s [a-zA-Z] > new_file
+删除“连续着的”重复字母，只保留第一个
+
+5.
+cat file | tr -s "\n" > new_file
+删除空行
+
+cat file | tr -s "\r" "\n" > new_file
+删除Windows文件“造成”的'^M'字符
+
+
