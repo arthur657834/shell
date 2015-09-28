@@ -89,6 +89,8 @@ $(( a+b*c ))
     ...
     array[n]=varN
 
+echo ${array[2]}
+
 删除数据元素
 unset SEASON[2]
  
