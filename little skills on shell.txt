@@ -118,3 +118,7 @@ echo $pass
 shell脚本中加入
 set -x
 set +x
+
+11.
+[:keyword:], where keyword can be - alpha, upper, lower, digit, alnum, punct, space,blank,cntrl,graph,graph.
+echo ??[[:upper:]]*
