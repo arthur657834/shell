@@ -136,6 +136,7 @@ set +x
 
 12 shell 查询数据库
 []中加双引号就不会出现[: too many arguments 这个错误
+mysql -uroot -p12345678 -h192.168.100.75 apm4mobile -e "SELECT * from app_info"
 result=`echo -E "SELECT * from app_info WHERE appName=$appName " | mysql -uroot -p12345678 -h192.168.100.75 apm4mobile `
 if [ "$result" ]
 then
