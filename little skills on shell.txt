@@ -120,5 +120,30 @@ set -x
 set +x
 
 11.
-[:keyword:], where keyword can be - alpha, upper, lower, digit, alnum, punct, space,blank,cntrl,graph,graph.
-echo ??[[:upper:]]*
+字符类(Character class)
+[:alnum:] Alphanumeric characters.
+[:alpha:] Alphabetic characters.
+[:blank:] Space and TAB characters.
+[:cntrl:] Control characters.
+[:digit:] Numeric characters.
+[:graph:] Characters that are both printable and visible. (A space is printable but not visible, whereas an ‘a’ is both.)
+[:lower:] Lowercase alphabetic characters.
+[:print:] Printable characters (characters that are not control characters).
+[:punct:] Punctuation characters (characters that are not letters, digits, control characters, or space characters).
+[:space:] Space characters (such as space, TAB, and formfeed, to name a few).
+[:upper:] Uppercase alphabetic characters.
+[:xdigit:] Characters that are hexadecimal digits.
+
+12 shell 查询数据库
+[]中加双引号就不会出现[: too many arguments 这个错误
+result=`echo -E "SELECT * from app_info WHERE appName=$appName " | mysql -uroot -p12345678 -h192.168.100.75 apm4mobile `
+if [ "$result" ]
+then
+{
+        echo create application successful!
+}
+else
+{
+        echo create application failed!
+}
+fi
