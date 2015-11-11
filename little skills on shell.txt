@@ -148,3 +148,17 @@ else
         echo create application failed!
 }
 fi
+
+13.
+source ./my.script 当前shell中执行
+. ./my.script 产生一个 sub-shell 来执行
+
+(cmd1;cmd2;...;cmdN)#在一个子shell里执行一组命令 
+{cmd1;cmd2;...;cmdN}# 在当前shell里执行一组命令 
+
+A=1;echo $A;{ A=2; };echo $A 
+1 
+2 
+A=1;echo $A;( A=2; );echo $A 
+1 
+1 
