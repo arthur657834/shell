@@ -116,6 +116,9 @@ ${array[@]:1} # two three four,除掉第一个元素后所有元素，那么${ar
 ${array[@]:0:2} # one two
 ${array[@]:1:2} # two three
 
+数组元素替换
+a[3]=100<=> ${a[@]/3/100}
+
 10.shell的特殊变量
 ignoreeof
 用来禁止使用ctrl+d来退出shell
