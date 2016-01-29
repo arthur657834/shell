@@ -1,0 +1,64 @@
+yum -y install expect
+
+ex1:
+expect autolog.sh
+#!/usr/bin/expect -f
+set timeout 19
+spawn ssh root@192.168.18.167
+expect "password:"
+send "657834\r"
+expect "]*"
+interact //执行完成后保持交互状态，把控制权交给控制台，这个时候就可以手工操作了。如果没有这一句登录完成后会退出，而不是留在远程终端上。如果你只是登录过去执行 
+
+ex2:
+#!/usr/bin/expect -f
+set ipaddr "localhost"
+set passwd "iforgot"
+spawn ssh root@$ipaddr              #spawn   意思是执行命令，expect内命令，shell中不存在
+expect {
+"yes/no" { send "yes\r"; exp_continue} #exp_continue可以继续执行下面的匹配
+"password:" { send "$passwd\r" }
+}
+expect "]# "
+send "touch a.txt\r"                       #意思为发送命令
+send "exit\r"
+expect eof
+exit
+
+ex3:
+ for  {set number=1} {$ number <= 100} { incr number +1}
+{
+puts “The number is $ number”
+}
+
+set timeout -1 永不超时
+
+set password [lrange $argv 0 0] <=> [lindex $argv 0]
+set ipaddr [lrange $argv 1 1]
+$argc为命令行参数的个数，$argv0为脚本名字本身，$argv为命令行参数。[lrange $argv 0 0]表示第1个参数，[lrange $argv 0 4]为第一个到第五个参数。与c语言不一样的地方在于，$argv不包含脚本名字本身。
+
+ send_user  "Now you can do some operation on this terminal\n"
+ 输出一些提示语句
+ 
+ puts        等同于 echo
+ 
+ 有时脚本执行不成功可以在代码中加入 sleep 2！！！！！！
+ 
+ match_max 100000  ##设置缓冲区大小，单位：字节。
+ 
+ 以下代码都不会 ~_~!
+ 
+ -exact参数为验证一切输入参数，包括 \n  \r  \t 等字符  expect -exact "\r[K[?1l\r
+ 
+ expect_user { -re " " {} eof break }
+ 在交互模式下，expect_user命令从用户接收消息，当用户输入ctrl+D时结束输入，循环同时结束。
+ 
+ $expect_out(buffer)
+ lappend procs $spawn_id
+ 
+ 当scp中含有通配符时，可以使用以下这个办法
+ spawn bash -c "scp $SRC job@10.1.1.235:$DST"
+ 
+ setopt nonomatch
+ scp -r abc:/def/\* ./
+ 
