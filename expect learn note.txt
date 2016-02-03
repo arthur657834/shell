@@ -57,7 +57,7 @@ $argc为命令行参数的个数，$argv0为脚本名字本身，$argv为命令�
  lappend procs $spawn_id
  
  当scp中含有通配符时，可以使用以下这个办法
- spawn bash -c "scp $SRC job@10.1.1.235:$DST"
+ spawn bash -c "scp $SRC job@10.1.1.235:/root/*"
  
  setopt nonomatch
  scp -r abc:/def/\* ./
