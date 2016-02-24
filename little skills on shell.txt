@@ -162,3 +162,32 @@ A=1;echo $A;{ A=2; };echo $A
 A=1;echo $A;( A=2; );echo $A 
 1 
 1 
+
+14.
+trap "echo 'Hello World' " HUP INT QUIT TSTP
+遇到HUP INT QUIT TSTP信号时执行双引号中的命令
+
+trap "" HUP INT QUIT TSTP 忽略信号
+trap : HUP INT QUIT TSTP 恢复信号
+ 
+HUP(1) 挂起，通常因终端掉线或用户退出而引发
+
+INT(2) 中断，通常因按下Ctrl+C组合键而引发
+
+QUIT(3) 退出，通常因按下Ctrl+组合键而引发
+
+ABRT(6) 中止，通常因某些严重的执行错误而引发
+
+ALRM(14) 报警，通常用来处理超时
+
+TERM(15) 终止，通常在系统关机时发送
+
+15.
+stty -a
+输出信号列表
+
+16.
+shell选项设置
+shopt -s cdspell 
+-s：激活指定的shell行为选项； 
+-u：关闭指定的shell行为选项。
