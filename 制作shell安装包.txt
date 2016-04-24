@@ -1,0 +1,71 @@
+#!/bin/sh
+PATH=/usr/bin:/bin
+umask 022
+md5=4489d98981396d2f8b586206ddda66b4
+pre_install()
+{
+echo "准备安装环境（略）..."
+mkdir ./install.tmp.$$
+}
+check_sum()
+{
+if [ -x /usr/bin/md5sum ]&&[ -f "install.tmp.$$/extract.$$" ]; then
+echo "正在检查md5......"
+sum_tmp=($(/usr/bin/md5sum install.tmp.$$/extract.$$))
+if [ $sum_tmp != $md5 ]; then
+    echo "文件md5不一致，请检查文件完整性,退出!"
+    exit 1
+fi
+else
+    echo "找不到md5sum命令或文件未提取,退出"
+    exit 1
+fi
+}
+extract()
+{
+echo "从脚本中提取文件"
+line_number=`awk '/^__BIN_FILE_BEGIN__/ {print NR + 1; exit 0; }' "$0"` 
+tail -n +$line_number "$0" >./install.tmp.$$/extract.$$
+#tail -n +$line_number "$0" >./install.tmp.$$/extract_tmp.$$
+#base64 -d ./install.tmp.$$/extract_tmp.$$ >./install.tmp.$$/extract.$$
+}
+install()
+{
+    echo "安装中（略）..."
+	unzip 1.zip
+}
+post_install()
+{
+    echo "配置中(略)..." 
+	echo 2 >> 1.txt
+    echo "清理临时文件"
+    rm -rf install.tmp.$$
+}
+
+main()
+{
+    pre_install
+    extract
+    check_sum
+    install
+    post_install
+    exit 0
+}
+
+main
+#这行下面接二进制文件
+__BIN_FILE_BEGIN__
+
+
+最后：
+cat 1.zip >> test.sh
+
+
+二进制文件可以是zip/tar/可执行文件等等，将文件追加到脚本里，例如追加zip文件到脚本里：
+
+cat binary.zip >>shell.sh
+这种方法提取后会改变binary.zip的md5值，校检的时候要用提取后文件的md5（./install.tmp.$$/extract.$$）
+还有一种方法可以不改变binary.zip的md5，就是使用base64将文件加密成文本：
+
+base64 binary.zip >>shell.sh
+在脚本extract()中，使用注释里的命令，网上有很多教程是用uuencode加密的，这个也行，不过很多系统默认是没有安装uuencode，通用性会下降，还是用base64好
