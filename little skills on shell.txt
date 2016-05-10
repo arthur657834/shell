@@ -191,3 +191,8 @@ shell选项设置
 shopt -s cdspell 
 -s：激活指定的shell行为选项； 
 -u：关闭指定的shell行为选项。
+
+17.
+如果shell脚本要加入crontable运行
+  1.里面的文件,命令都使用全路径
+  2.最好在第一行加入source /etc/profile
