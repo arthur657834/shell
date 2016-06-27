@@ -1,68 +1,54 @@
-getopts配合case来进行操作时有两个隐含变量：一个是OPTARG，用来取当前选项的值，另外一个是OPTIND，代表当前选项在参数列表中的位移
-while getopts ":a:bc" opt #第一个冒号表示忽略错误；字符后面的冒号表示该选项必须有自己的参数
-getopts:它不支持长选项
-ex:
-echo $*
-while getopts ":a:bc" opt
-do
-       case $opt in
-               a ) echo $OPTARG
-                   echo $OPTIND;;
-               b ) echo "b $OPTIND";;
-               c ) echo "c $OPTIND";;
-               ? ) echo "Usage: args"
-                   exit 1;;
-       esac
-done
-echo $OPTIND
-shift $(($OPTIND - 1))
-#通过shift $(($OPTIND - 1))的处理，$*中就只保留了除去选项内容的参数，可以在其后进行正常的shell编程处理了。
-echo $0
-echo $*
-
-getopt:支持长选项
-#!/bin/bash
-
-#-o表示短选项，两个冒号表示该选项有一个可选参数，可选参数必须紧贴选项
-#如-carg 而不能是-c arg
-#--long表示长选项
-#"$@"在上面解释过
-# -n:出错时的信息
-# -- ：举一个例子比较好理解：
-#我们要创建一个名字为 "-f"的目录你会怎么办？
-# mkdir -f #不成功，因为-f会被mkdir当作选项来解析，这时就可以使用
-# mkdir -- -f 这样-f就不会被作为选项。
-
-TEMP=`getopt -o ab:c:: --long a-long,b-long:,c-long:: \
-     -n 'example.bash' -- "$@"`
-
-if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
-
-# Note the quotes around `$TEMP': they are essential!
-#set 会重新排列参数的顺序，也就是改变$1,$2...$n的值，这些值在getopt中重新排列过了
-eval set -- "$TEMP"
-
-#经过getopt的处理，下面处理具体选项。
-
-while true ; do
-        case "$1" in
-                -a|--a-long) echo "Option a" ; shift ;;
-                -b|--b-long) echo "Option b, argument \`$2'" ; shift 2 ;;
-                -c|--c-long)
-                        # c has an optional argument. As we are in quoted mode,
-                        # an empty parameter will be generated if its optional
-                        # argument is not found.
-                        case "$2" in
-                                "") echo "Option c, no argument"; shift 2 ;;
-                                *)  echo "Option c, argument \`$2'" ; shift 2 ;;
-                        esac ;;
-                --) shift ; break ;;
-                *) echo "Internal error!" ; exit 1 ;;
-        esac
-done
-echo "Remaining arguments:"
-for arg do
-   echo '--> '"\`$arg'" ;
-done
-
-这个脚本还可加强对参数的校验
+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
+WAsoa3UeJO3EiF5M0UWcLps5Z4AjqdAH

@@ -1,198 +1,105 @@
-1.输出A B 不一致的数据
-#!/bin/bash
-A="aa bb cc dd ee"
-B="AA bb CC dd ee"
-
-AA=($A)
-BB=($B)
-for i in `seq 0 ${#AA[@]}`;do
-  if [ ${AA[$i]} != ${BB[$i]} ];then
-    X[$i]=${AA[$i]}
-  fi
-done
-echo ${X[@]}
-
-2.函数中输出函数名：$FUNCNAME
-function log() {
-    echo ${FUNCNAME[@]} #输出log action main
-echo $FUNCNAME #输出log
-}
-function action() {
-    log
-}
-action
-
-3.循环中的跳转：continue [n] 
-
-首先需要声明的是continue可用于子函数，跳转到父函数中的指定层次循环。如：
-	就是跳转到x层
-function son() {
-    for z in 1 2 3; do
-        if true; then
-            echo $x,$y,$z
-            continue 3
-        fi
-    done
-}
-function father() {
-    for x in 1 2 3; do
-        for y in 1 2 3; do
-            son
-        done
-    done
-}
-father
-
-n的值从1开始（不写默认为1，数字越大则层数越高，超过总循环层数时值为最大层数）；
-
-以上代码中只有最上层"x"会正常循环完，其余子层都在首轮跳出，此时n的最大值为3,跳转到x；
-
-若在son后加一个“&”使其在后台运行，此时continue能控制y、z两层，但不能跳转到x，即n的最大值为2。
-
-不会的话，修改一下continue 3->continue 2,就知道怎么用了
-
-
-4.变量间接引用（indirect expansion）
-a=1
-b=a
-echo ${!b}
-eval echo \$$b  输出都是1
-
-像删除变量一样，删除函数也可以使用 unset 命令，不过要加上 .f 选项
-
-5.进入目录并打包文件
-cd /source/directory && tar cf -
-
-6.猜数
-#!/bin/sh
-echo "Please input the num (1~~10): "
-read num
-while [[ $num != 4 ]]
-do
-if [ $num -lt 4 ]
-then
- echo "Too small ,Try again.."
- read num
- elif [ $num -gt 4 ]
- then
- echo "Too big ,Try again.. "
- read num
- else
- exit 0
- fi
- done
-echo "Yes ,you are right !!"
-
-重点是exit 0的用法
-
-7.使用tr命令将文件中的回车转换成空格：
-[root@pps ~]# cat /etc/shells | tr "\n" " " > /tmp/tmp.file
- 
-将文件中内容给数组赋值：(碰到第一个回车符之前的内容)
-[root@pps ~]# read -a SHELLS < /tmp/tmp.file
- 
-查看数组赋值情况：
-[root@pps ~]# set | grep "SHELLS"
-SHELLS=([0]="/bin/sh" [1]="/bin/bash" [2]="/sbin/nologin" [3]="/bin/tcsh" [4]="/bin/csh" [5]="/bin/ksh")
-
-8.ssh自动登录
-expect autolog.sh
-
-#!/usr/bin/expect -f
-set timeout 19
-spawn ssh root@192.168.18.167
-expect "password:"
-send "657834\r"
-expect "]*"
-interact
-
-9.shell 不回显输入
-#!/bin/bash
-stty -echo
-read pass < /dev/tty
-stty echo
-echo --------------------------
-echo $pass
-
-10.打开自动跟踪功能
-shell脚本中加入
-set -x
-set +x
-
-11.
-字符类(Character class)
-[:alnum:] Alphanumeric characters.
-[:alpha:] Alphabetic characters.
-[:blank:] Space and TAB characters.
-[:cntrl:] Control characters.
-[:digit:] Numeric characters.
-[:graph:] Characters that are both printable and visible. (A space is printable but not visible, whereas an ‘a’ is both.)
-[:lower:] Lowercase alphabetic characters.
-[:print:] Printable characters (characters that are not control characters).
-[:punct:] Punctuation characters (characters that are not letters, digits, control characters, or space characters).
-[:space:] Space characters (such as space, TAB, and formfeed, to name a few).
-[:upper:] Uppercase alphabetic characters.
-[:xdigit:] Characters that are hexadecimal digits.
-
-12 shell 查询数据库
-[]中加双引号就不会出现[: too many arguments 这个错误
-mysql -uroot -p12345678 -h192.168.100.75 apm4mobile -e "SELECT * from app_info"
-result=`echo -E "SELECT * from app_info WHERE appName=$appName " | mysql -uroot -p12345678 -h192.168.100.75 apm4mobile `
-if [ "$result" ]
-then
-{
-        echo create application successful!
-}
-else
-{
-        echo create application failed!
-}
-fi
-
-13.
-source ./my.script 当前shell中执行
-. ./my.script 产生一个 sub-shell 来执行
-
-(cmd1;cmd2;...;cmdN)#在一个子shell里执行一组命令 
-{cmd1;cmd2;...;cmdN}# 在当前shell里执行一组命令 
-
-A=1;echo $A;{ A=2; };echo $A 
-1 
-2 
-A=1;echo $A;( A=2; );echo $A 
-1 
-1 
-
-14.
-trap "echo 'Hello World' " HUP INT QUIT TSTP
-遇到HUP INT QUIT TSTP信号时执行双引号中的命令
-
-trap "" HUP INT QUIT TSTP 忽略信号
-trap : HUP INT QUIT TSTP 恢复信号
- 
-HUP(1) 挂起，通常因终端掉线或用户退出而引发
-
-INT(2) 中断，通常因按下Ctrl+C组合键而引发
-
-QUIT(3) 退出，通常因按下Ctrl+组合键而引发
-
-ABRT(6) 中止，通常因某些严重的执行错误而引发
-
-ALRM(14) 报警，通常用来处理超时
-
-TERM(15) 终止，通常在系统关机时发送
-
-15.
-stty -a
-输出信号列表
-
-16.
-shell选项设置
-shopt -s cdspell 
--s：激活指定的shell行为选项； 
--u：关闭指定的shell行为选项。
-
-17.
-如果shell脚本要加入crontable运行
-  1.里面的文件,命令都使用全路径
-  2.最好在第一行加入source /etc/profile
+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

@@ -1,243 +1,203 @@
-set命令有时间去看看，还有echo
-
-1.if ... elif ... else ... fi 语句
-
-if [ expression 1 ]
-then
-   Statement(s) to be executed if expression 1 is true
-elif [ expression 2 ]
-then
-   Statement(s) to be executed if expression 2 is true
-elif [ expression 3 ]
-then
-   Statement(s) to be executed if expression 3 is true
-else
-   Statement(s) to be executed if no expression is true
-fi
-
-2.case esac语句
-
-case $aNum in
-1) echo 'You select 1'
-;;
-2) echo 'You select 2'
-;;
-3) echo 'You select 3'
-;;
-4) echo 'You select 4'
-;;
-*) echo 'You do not select a number between 1 to 4'
-;;
-esac
-
-3.for
-for 变量 in 列表
-do
-    command1
-    command2
-    ...
-    commandN
-done
-
-for ((i=1;i<=10;i++))
-do
-   echo "num is $i"
-done
-
-4.while
-while command
-do
-   Statement(s) to be executed if command is true
-done
-
-死循环  : 冒号：内建空指令，返回值为0
-while :; do
-    echo looping...
-done
-
-5.until循环:
-
-until command
-do
-   Statement(s) to be executed until command is true
-done
-
-6.自定义函数：
-function_name () {
-    list of commands
-    [ return value ]
-}
-
-fuction_name () {
-    command1
-    ....
-}
-
-7.执行结果赋值给变量
-curdir=$(pwd)
-curdir=`pw`
-
-8.$(()) 做数学运算用 
-$(( a+b*c ))
-`expr 4 \* 5` 
-$[ 4 * 5 ]
-** 次方运算 2**3=8
-
-
-9.数组
-(1) array=(var1 var2 var3 ... varN)
-(2) array=([0]=var1 [1]=var2 [2]=var3 ... [n]=varN)
-(3) array[0]=var1
-    arrya[1]=var2
-    ...
-    array[n]=varN
-
-echo ${array[2]}
-
-删除数据元素
-unset SEASON[2]
- 
-计算数组的长度:
-${#array}
-${#array[0]}
-
-计算数组元素个数：
-${#array[@]}  或者  ${#array[*]}
-
-遍历数组：
-filename=(`ls`)
-for var in ${filename[@]};do
-echo $var
-done
-
-数组的提取：
-array=( [0]=one [1]=two [2]=three [3]=four )
-${array[@]:1} # two three four,除掉第一个元素后所有元素，那么${array[@]:0}表示所有元素
-${array[@]:0:2} # one two
-${array[@]:1:2} # two three
-
-数组元素替换
-a[3]=100<=> ${a[@]/3/100}
-
-10.shell的特殊变量
-ignoreeof
-用来禁止使用ctrl+d来退出shell
-
-noclobber
-noclobber变量可以在重定向输出时保护已存在的文件，防止被意外地覆盖。
-
-noglob
-设置noglob变量后，shell将不扩展文件名中一些特殊的字符或字符串
-ls answer?输出结果为answer?
-
-$ set –o noclobber // 使noclobber变量开
-$ set +o noclobber // 使noclobber变量关
-
-; ： 在前一个命令结束时，而忽略其返回值，继续执行下一个命令。
-&& ：在前一个命令结束时，若返回值为 true，继续执行下一个命令。
-|| ：在前一个命令结束时，若返回值为 false，继续执行下一个命令。
-!：  执行 history 列表中的命令 ex. !72
-
-file=/dir1/dir2/dir3/my.file.txt （同样适用于数组）
-${file#*/}：		拿掉第一条 / 及其左边的字符串：dir1/dir2/dir3/my.file.txt
-${file##*/}：		拿掉最后一条 / 及其左边的字符串：my.file.txt
-${file#*.}：		拿掉第一个 . 及其左边的字符串：file.txt
-${file##*.}：		拿掉最后一个 . 及其左边的字符串：txt
-${file%/*}：		拿掉最后条 / 及其右边的字符串：/dir1/dir2/dir3
-${file%%/*}：		拿掉第一条 / 及其右边的字符串：(空值)
-${file%.*}：		拿掉最后一个 . 及其右边的字符串：/dir1/dir2/dir3/my.file
-${file%%.*}：		拿掉第一个 . 及其右边的字符串：/dir1/dir2/dir3/my
-
-${array[@] /o/m}#第一个匹配到的，会被删除
-${array[@] //o/m} #所有匹配到的，都会被删除
-${array[@] //o/}#没有指定替换子串，则删除匹配到的子符
-${array[@] /#o/k} #替换字符串前端子串 ex:one
-${array[@] /%o/k} #替换字符串后端子串 ex:two
-
-记忆的方法为：
-
-# 是去掉左边(在鉴盘上 # 在 $ 之左边)
-% 是去掉右边(在鉴盘上 % 在 $ 之右边)
-单一符号是最小匹配﹔两个符号是最大匹配。
-
-${file%?}:删除最后一个字符
-${file:0:5}：提取最左边的 5 个字节：/dir1
-${file:5:5}：提取第 5 个字节右边的连续 5 个字节：/dir2
-
-
-${var}	 				变量本来的值
-${var:-word}	  如果变量 var 为空或已被删除(unset)，那么返回 word，但不改变 var 的值。
-${var-word}	  如果变量 var 为空，那么返回 word，但不改变 var 的值。
-有没有：的区别就是var是否被set过
-${var:=word}	  如果变量 var 为空或已被删除(unset)，那么返回 word，并将 var 的值设置为 word。
-${var:+word}	  如果变量 var 被定义，那么返回 word，但不改变 var 的值。
-${var:?message}	如果变量 var 为空或已被删除(unset)，那么将消息 message 送到标准错误输出，可以用来检测变量 var 是否可以被正常赋值。若此替换出现在Shell脚本中，那么脚本将停止运行。
-
-$0	 						当前脚本的文件名
-$n	 						传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。
-$#	 						传递给脚本或函数的参数个数。
-$*	 						传递给脚本或函数的所有参数。 ("a b c")
-$@	 						传递给脚本或函数的所有参数。被双引号(" ")包含时，与 $* 稍有不同，("a" "b" "c")
-$?	 						上个命令的退出状态，或函数的返回值。
-$$	 						当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。
-
--eq	 						检测两个数是否相等，相等返回 true。	 [ $a -eq $b ] 返回 true。
--ne	 						检测两个数是否相等，不相等返回 true。	 [ $a -ne $b ] 返回 true。
--gt	 						检测左边的数是否大于右边的，如果是，则返回 true。	 [ $a -gt $b ] 返回 false。
--lt	 						检测左边的数是否小于右边的，如果是，则返回 true。	 [ $a -lt $b ] 返回 true。
--ge	 						检测左边的数是否大等于右边的，如果是，则返回 true。	 [ $a -ge $b ] 返回 false。
--le	 						检测左边的数是否小于等于右边的，如果是，则返回 true。	 [ $a -le $b ] 返回 true。
-
-!	   						非运算，表达式为 true 则返回 false，否则返回 true。	 [ ! false ] 返回 true。
--o	 						或运算，有一个表达式为 true 则返回 true。	 [ $a -lt 20 -o $b -gt 100 ] 返回 true。
--a	 						与运算，两个表达式都为 true 才返回 true。	 [ $a -lt 20 -a $b -gt 100 ] 返回 false。
-
-=	   						检测两个字符串是否相等，相等返回 true。	 [ $a = $b ] 返回 false。
-!=	 						检测两个字符串是否相等，不相等返回 true。	 [ $a != $b ] 返回 true。
--z	 						检测字符串长度是否为0，为0返回 true。	 [ -z $a ] 返回 false。
--n	 						检测字符串长度是否为0，不为0返回 true。	 [ -n $a ] 返回 true。
-str	 						检测字符串是否为空，不为空返回 true。	 [ $a ] 返回 true。
-         				
--b file	 				检测文件是否是块设备文件，如果是，则返回 true。	 [ -b $file ] 返回 false。
--c file	 				检测文件是否是字符设备文件，如果是，则返回 true。	 [ -b $file ] 返回 false。
--d file	 				检测文件是否是目录，如果是，则返回 true。	 [ -d $file ] 返回 false。
--f file	 				检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。	 [ -f $file ] 返回 true。
--g file	 				检测文件是否设置了 SGID 位，如果是，则返回 true。	 [ -g $file ] 返回 false。
--k file	 				检测文件是否设置了粘着位(Sticky Bit)，如果是，则返回 true。	 [ -k $file ] 返回 false。
--p file	 				检测文件是否是具名管道，如果是，则返回 true。	 [ -p $file ] 返回 false。
--u file	 				检测文件是否设置了 SUID 位，如果是，则返回 true。	 [ -u $file ] 返回 false。
--r file	 				检测文件是否可读，如果是，则返回 true。	 [ -r $file ] 返回 true。
--w file	 				检测文件是否可写，如果是，则返回 true。	 [ -w $file ] 返回 true。
--x file	 				检测文件是否可执行，如果是，则返回 true。	 [ -x $file ] 返回 true。
--s file	 				检测文件是否为空（文件大小是否大于0），不为空返回 true。	 [ -s $file ] 返回 true。
--e file	 				检测文件（包括目录）是否存在，如果是，则返回 true。	 [ -e $file ] 返回 true。
-
-command >file	  将输出重定向到 file。
-command <file	  将输入重定向到 file。
-command >>file	将输出以追加的方式重定向到 file。
-n > file	      将文件描述符为 n 的文件重定向到 file。
-n >> file	      将文件描述符为 n 的文件以追加的方式重定向到 file。
-n >& m	        将输出文件 m 和 n 合并。
-n <& m	        将输入文件 m 和 n 合并。
-<< tag	        将开始标记 tag 和结束标记 tag 之间的内容作为输入。
-ex:
-/usr/bin/ftp -i -n << FTP
-open 192.168.100.9
-user test test
-cd /DER/Firmware/Beta
-mkdir $der_dir
-cd $der_dir
-mput der*
-bye
-FTP
-
-11：
-linux系统除了提供位置参数还提供内置参数，内置参数如下：　
-$# ----传递给程序的总的参数数目 　
-$? ----上一个代码或者shell程序在shell中退出的情况，如果正常退出则返回0，反之为非0值。 　　
-$* ----传递给程序的所有参数组成的字符串。 　　
-$n ----表示第几个参数，$1 表示第一个参数，$2 表示第二个参数 ... 　　$0 ----当前程序的名称 　　
-$@----以"参数1" "参数2" ... 形式保存所有参数 　　
-$$ ----本程序的(进程ID号)PID 　　
-$! ----上一个命令的PID
-
+U2FsdGVkX1/WS6vnNGtAKHIhyNZ7p0FQwmLtpWksjtc54mKN+/DPhfvoxhRTRD82
+vlMsbH7fG0lI35NHqHr5kksA80RFeF+DY6jjzx4rjAV6g17X7wvs3sX/6hh7U/w/
+ZVqNvna7rZbkC5LG016PkgCCQ24m+Au1JXduVpU+R643xhNiv5hEv+rWg6x8SpKl
+R1UYYiKBUnpYkcMu+cvUoSQujxHTmbzoDJK71e8Wm6Fe1uKGfb3msV/oVpyELXxQ
+uSsCenKbECUt97Eo0mEbod/OR0U+3Eluh6mz2mDtseA9D6O9gQyK4i952AtfA46s
+3gjDsSozoHNDhCETg60RUz2xo3PFgYQ3SAmv3TO8tBRKxAzCMORwSvAVpnmRvn2t
+VFBM42uq+qPn8q4TiIBfgoJ/S9ITRruPPJDQDiboi9gNY96rtDBuD/I4zWrhe3Hw
+OUTjsBQPpf3NQ6jYGl3baDu4op+OtYsxViRmOeFHTBrEgdmEdXwdqXC7SfjRy1l4
+iFAzd/exNzuyDVryZyN9wIJuDNCIeNAYDfcU6Bv4hORFBi2b86+2h15MqAmrqaT2
+qXDxaDv+UCTd8rYxEfOc5OebOx+ayjIi6hYC5JQKGrSaa+J+oZ1t+AhY+cYZIRvV
+Z0JMASd8fr6LP1yZStEHhF/02ZVls5llWmBf73A9NpBxF/78WDyMrEb6Ow122ifa
+M+S19uXlpMuWPIBsTfxpt6ivnDBFe5HolC/tufiSkx/WJmaMzNGlgFws1C5ZvikT
+jr1akH/FdGLmArAJkzaRDx/uGk1lurkYuby3ZnrbhWYsXNfSv8/b5aVMZDT1WYTK
+2HPgmAR7ckqnkG8PkMQvi0HIV/tnX/NSbH1qHGDi7+YlehVbaE7P928ugR6gSUEU
+sBYJBZCOCLAFBooEiCFrzjmXFlSUQfN0s25UBGz2fNA4Qp/JUMwfglj8XVXahw59
+I/bU0a7AvZpN5ro4MLqWr42ek0+0I/run2x0W6EOB+xZhqh0+CQBV+pbvw21hZ/o
+/iaPsDfE2ng+Hx2bXWr+fp5znVYWySB90dKdicJKkEN5/eQHPx/g3XjiYoy5uUwU
+88HJyE0PTpo9oGc/arhL/SU5FqnqPgKTmjax+fEQQiMZg2PxmEQfMPMul7mnReJ3
+BC2njIIMXpKQ9+whw30DrMv+VpLgYYgvZiawJLYIREQy9QtRGml0dFPYp4wWoVhx
+0YZi8UpE8Ikw+neQS5D25Jhh9onSf6YjetLQL49SFTEydXfsa1d88c9VGRlVUAVu
+MJ1KsCmkWRoOueEvTMCMOas8hym+RL3/ced5e0N9tMgEA1ZXWP+FLL0XvembLV7Z
+Uembg4G0xR95FMOgggIEMsxPz/wNgd5pvp1mVsAIjVGES7CkwXE593aofsSJ2jlT
+lLwDx9aWBqKJULhCZZEupE2X3+FjCAbMmV2Dp6vcHi/+G1GtzBrN4nWtYttHdzA0
+oK1mMAnOe65wUNachBmrr+KA1qh1Jh7XKTCzRYDfsOSskV8f8P3ynzkY0B/38pan
+2ku1fHPo8QgOq+fWeh0dy75iEw83t3L8Do+SJqgw72D8E3m0pN3bPTLKpigf09az
+tLikLyI9kuYKbY0PqN3Yq8bFxb/uuSXVN591IzSg/l4tyNoVyOvgMbz5klkIQ2TZ
+3pxIqEZ+4IqaQKyOLL4/X9FXEoLuNOOk5wQs9tCiVl+JJWRocB7bAfkmxn5JwHYD
+P5NVx588+Yv+fLdhAvS/IXMxS9cdYtCCQRIcOQAlO75o8uKpZtNBQfQNmcogvAtG
+lfUATRaAe8ctViAGuCDs7SkRVmrV79hQfGEk+8L54vOOdtrZ6jvgI4ZitT5fTGvr
+ucwmJcrnaqmoP2F5+7GxZ4Wn8KuNGQSQu3ah6sYhRpLEJFnZV6Hz/Bz0bH4lClkp
+MkOVP6OuS227FgbKc675RR9vZxUmm1uaT2oXWpsXvAGokfvYOuIE6eJy5TtGgM8c
+0mnTXdFnTrntwYGExmSoK8BFv0FhTkMUC6Okf3B24A0PfNz9FX0As3IVBlwkSGUd
+yWHy+CI7njJDAv6k1yoszJRxsaCtgf7kE28EP6hYIlryJH/Yw3naUygpZovYPCkw
+PVsDShomKB3O85KPoTqE6o5OYAf4ce0IMepj7PQ8ZAp4zJmoTZQq/uC8jsTH3hro
+V232Jnd95LvTAq5f8/VD9cXKiRQjqmz/3hTcNWp4D8gPbAXgnHLG5w2HqH5IEVXq
+Sfu+B321WtgLiNO9upMs+BYDzHUReCx1o0PQ4rGzDlB2A5xY1KMCr9hnrB2WH6wi
+1WmlwcINdncQRarW2Q9A0cz3AHr8+/NmCIropl0pFRzrLhmHgMwqyEXEt/JNCwjh
+v7Xv7kqn24301k87noF9BVj1C2k4OeX/c2ccvT+PBtVWRhvfbUDHQVppnue6ZK8R
+E3uGednQQ+ciL1/3Ku3/ikUnS05jI7kcYh5NUb6ghjARdR352HoDNvtcSTF2+g3E
+ykO/XDWXD02eJWMRhWFiEmFnIAsZ5qet6Fu/al+fMGMWESoQ+hHS/TXQWlZe08A/
+rko4gbo9BI6gCl30F2/0ik8mPbBjwCQDs8dryoH0PWTiX7uG2WS18kahmoH/1Da+
+Jaaecwi/U6C52tI82jZ65k2US6hYcf6lp9N8+vg8YJO9U+lqsZgNRGRi37qynSYx
+1pTAfJ9YEILTUe9S18u5KWHcKh8YaCUUEob0JUL7VTpNXZts3IzL29v+VJRk4Z7Q
+BcugL2RgeK5Pdr+UP7Ci8pvBVZcTPDpFwgzNODE0k8yLTUJzXatv71/GFBpzE4xE
+e3GhN4yamhOhHhsBCNo34JimIZyE+Fv/1LpNJM2a5lqVBq09XQ3ATOKAjdL/WKbW
+mm+KV+QyqHU0rLdNRw5k9bF35oei0YTHf0aEA1mQt9U4xK4ZU8OBNZfY+wKniIAS
+ZmKcjM7l2UAZWEwzpzgolM7YK7fiqjeR1Ozqa9ZoFeLA6ZNo7Fsj5LrnYoignWSo
+/i8dZFMRfr7p5aOyqWFhevVoGwjHY3Z4CWOCEisT40qVr2X2NyzlVJTqtuBwQdpd
+5yYkcYtda8t+DGzljBHBG4BSJUtuZJY4swoUNywJkjRTTaQqxFcFjrwQo21aUvSa
+80CvVt8rIUEg7z/r7o5yYArGXFCeQpgkOPQZ7vZpytA3YxUujtMnUKs6JyjzBjgO
+QnHRYLdYUvpF0NeFiKUUc1g0pwVSVVQchWDbYyMpdNSYEun7r/VgF3+f3nNnhUbY
+//9+XM1559NMM+eJAgq548kDudSPGr2FwRxrB1CGf00fnrhSvsx6nZaCPJKFgUpT
+G7L7GqrWtoOJ2HbqhGJ/0Wh2YZR3jfMsa9rCm2HyOMJozcj5DvPvnKeR1RVme2jC
+B2Tue0z+Z1ZbmITCHgV3XdZ+/yVBSNbEfb8AsB+vAwiXMDp2MjDAvTqGO/a8K2KE
+jrcrtcT/7UN73pyJoENJfvZ8mqcGrUJpa8sCrAmjBcFc5wezN/DO7UiG85JkcMKs
+UPdWruX7J3O4zbiGYyMzH3ye/e0ihc86ONPnB5XnNYH4jQWV5/26UnSjSnb7JWGZ
+lwbYSZ+9TTwbBYRQlXaouw+/7UoAlA+Id/35ad1cYUsYX5two+V5l81dfA+Tbq2v
+ejBTB1FlMXS18+bRT7F/jbQ50Brm/+ArEHKset5Ug4DeJBDFLYE55eJmU3OxHn2n
+T2rTuroI1IpCdnmiICbDn6WIt8XdHLDNqtmQKbseIJpWvA9XJFPX5P/SXuPbHY10
+OzaSZwNFwO43uD6n0NBfoTON7u/Sj7hiEG+kv5k/tm2cv3XRcZyA6LZH38lRmioz
+ShlIVEXKexk8UYxQ4AL/p/gMmfbAWYYjUqQNZKmGa8Z5lp0GHXTLRqhhWXAEDMR5
++zMdDgp73Z9RJOwc11XTv6w0BQWzqG09Y4Y+ji4dpUC55HMmOQXQ9K/Nm2pKdrzN
+IjOc8RwdVCpc3CzwKy+UbjCVkdrTZO0p18avjrG1Gr50iMcvT9+dUekJ9t/kg1+x
+zf89fFxKosILzHLF6JrQGaMoDLnF2iIFcdTmmh9ojHTWV3wolaMYIQoP/Npe0OU+
+bkBBY/d7xRDaAojCbjXsVnt84ot/+H48TwCsS5n309Ebzm9vHHRX1QPeUqRJ9lTk
+3xVJsGlrlcXIKND/2F8JHWDSaKkDWTF/rA8cSLn0weAVk0VOxtyotzQh7a7ADMjs
+cKKQQ/4r48Lxv9sDOQuR2lJBrhnJCmf0GxAgA/AvoqGWIsBPX/M+ebYhNfxmSwsZ
+0E05ra2ZOMyPTzscHvAuuS3/fpM/4F12YxotRJG7Wgjod30p1cPKvpO0nP9yOMFQ
+Fxf+U+m6gaiK1hsjS9HWfx6uDOzyKmoCjn+MOipYa4NnZFh9L0aF6DS4DzL5Cv4a
+p7voep2ocBgc75aYA7xrwf04BeIAQuIIMW+Fho0U92iX5whLDIlGHsn7hhjb4nYt
+67JNXQ4mZBCeYVdmYzYSU1YfSYJODimNVp2Kb76dYsmEl+QGcKknBUBXVocwFNM0
+B8M5JRZ+s6NFjh7ByRTXWZmW6N/zhn0JzQc1IDHOPrhUBjph/tLFoLKAGs0h1J0o
+JEGtF3yrl4uzMAUS6hyVta4ycuEfF5ERJIfEeN6qCFIPGAvRQAzv7qJZ9Td0ATkv
+41je5f1UCCSgJkxx8uaDeEsFEGsRHTUk9SGkUabKPH9IcXiFcmXk7T9GSMVUG/oy
+8cartPW6p7bT2qPGqi16D0PkXMig43kZg3gpljyVxzYvSkyJFBGZLiGuNv1p7745
+uVu7KYTNu0YoG5Iaglk1foY1hXpOJhkouceMbk8Z+I5Tpmd46KbMSxZeyOVrj3GM
+quG5x8NukqWzlFZqUMxryZH0U4UBvSipBMkbsCLdTgaH31aE5+H9oOvUVVrrH1cY
+e2gUZY6TaM81VPM5yYTSiLR03aF9XfoTliNcORgom8oBMmXB7Id47BdvRJuPoz8A
+oQc0StHKIT3q9VK0luhP7FECvnjWgxphhjOex77u7t9NsmkmpkeOEwHgv9gdhVn/
+M4ttFfayw8nebqXlBLnisIbqDZ3P0q+yhJekJdslu6spajrA5lb2YrIVt9VLM9fr
+Bw3W+j/w9orscwLYVaDaJTLuPYaUhtRoFs/zEuXpQY6xc7iWwZUA2ArpaFZpAYbX
+r/8cSunAa/7c7bpzFlcmetOMlu0eAMh1vpP3NbR+fKX06c7cBgQx84L3hWTQjhd8
+1N5rSKeCk+bBMZpp00Rrj4KYNayw1kSofCLZDP4YQ3HQzqCtaz7TAsdkvFw/Y4Zo
+IpGrwpLRbNJGZF7eFEFCbVBlZoSBepzBa6ysmMwvazArW4s3udT5BcnG8lFyM89n
+majM4+IhsZKhUUIHkkN0oy5/BxqmwcLRSUT1yVEamDP9xPA7kUyARWBf2aNFsriZ
+yIknf5ITTwFg2CzeiPiqzaOsHCrlasp1PAVnkEhOZIC1hDIvamxy8gL5IyW6EAhB
+aHvIYClyuls8QlVGkr5fpB4U+ruim07IX5MfAE9EdrAtfvNpOZ0uJ94WUQvC63nk
+iyE201R2nBTa2ENHO87DWEw0h4BYQBvqfDaGT6pi1GL/a9L6G1zm2hEtPV2RP0ht
+RDDFIyE6DNRqiel6jK03JIlqFn1ZAt6h/NguJG9B8ciQYluXn9bWyl1+035k2Bfj
+jJclJQZRc0SQj65Kejl6j6kXlCg/ztaHPgpcegvWAWnOqZ1sCn4MPnwJyWJ5UGcy
+cRac2vDQP8Va9P4Ac08fUlahAPPcp+umVimMZwQutDkH/NPsXpnUftW1q6SiXiyB
+rru/Kb9/yX6PnNY0lubN+voFsbIfmUsBJV4Z49ZJNDfIThzBj+u8/+Pkd2Pk1ZZ1
+RDxDp0kgO1EtpOzrYtgt0JdIHJJWwNc+5lyBZYaLbcj+2Ns2H0ACyKrtedDXagwz
+Z0RHvxTprwuxXsdTb6iAyRkIOF+4UsRBlrivnumMNEOpmctPNrOMeAKZDE1ltMHV
+AYNRrWjtocGpP+hPQ2UvQU7YTKHWzr2GPBjzYRc4z55chbnTzCqMBABHmTh7o4n1
+/Qtujbwg3H6z66OkWIJ8K7fH/DEjNpT4AMuxNEeHLcEVInPA7ViKRaVWNJsw4189
+5G+oB9q/4evCr23QzYHtho6ts4ARW4yM1jnW/1wUWKaPb40y5KiQ4Xvc1fRkgHUA
+gQTstgz4oLo06PeppyPVlh24C+AXHpW8SuP02ETdsK7KqThK2EZ3ByPxgnHDGD/p
+eyBi55QLGOnfRHKAhprnvcIOCSTrffxNU/ZbecE4gcjEi6gNsFgU6awXnbiFMJjz
+Tp32gIviMZc9BvWqh5V3J8p+iofnERJZK5epl7WBD3Ud1FuPcrShpZZLIe/qqgj/
+4o6IHnTwb8AHHSG+W507cKZs5kN2d5+zX2LEQraYe5kjLkc5Esv8Iv5rB5wPx1Ri
+bzn6QRShcc+YSz1Uc2pFAPkyagxuiF/afyvulWGCjgziNghkrJDgZWDrjpcXRLKs
+2NlI3Lzy6hHfyQ4KHxMSxCMC7XvysCHSRmnMDj0oMuQg4yZ3xhjZEhmfXmsb8dXV
+RjS9ve5r/OlJ6P/8U7rCw/HrRzmuPpvp2kNAF10l7DWuWmS/Xw19nTUJRUI6Q4+O
+sibSXS7kakgN4mVfIJUlDCinzL6kq3Sw/2OgjtT/PULvt7gjkU2prYR3Jzqakxfg
+6RJ2pVTxeodEeqOdWkqs39XFonBMgeW2AdRQfwVkjFpx2EIlhdW2BEuGdEZ1WGnW
+UkKFX5qRfo5Y3J2wmXLRIfpVVLy9k9qm3LAIWJR67Os7OQ/tPd0IG8VhkRxtS6xD
+/F5oNiVXoZ7OkuY7IO8gIgVKMtVKMacEO478LYf7m2usxoehjE6NtXBQcPPv+i4p
+iIKZTiTxY+9KtZJmvqVPBe27gajNMnCt/SVvCk0MDXJAoxFJIvICgkZwQqQxIUcd
+kuozaYbjizuxukNOFJcOSRwhCCLqHSTjdnY0Q0OVDIsDbUuYZcP6FMzc8eZ0yO2/
+lzuru3hmHSbzPErLY1xdvccZNM1wn2jTrlO3bzC3t2EL1KYUd8I+D8Qr/hn7LrVc
+MKX9LqE9uUoZFn//5i8/NLbQ8GwhoKVZ7OlNTsnGcvVZyCnpE4aPfGUfomEqQqx3
+GsFYaXgUAs3f/BPyVJxC6wBm0JuZfcEFwxtGm75LXHzdlvASPuRURCZu0jizIFdF
+eU0+9LPdZebO14e2YYlraYkxZwSVWXdgzVZsaW/oFor4+W6Z3G46LXQXp4uPNZrC
+FAz9t7o84ZAT9jMidhBqONQZCfkG+Rj330CQ7O+OtvzPk+DFFspQtLmlVHQiCnba
+lO4a6wvmwFAmSAgNkoV9NRdRKBhvwVhMITZ93S851dwYzjS/uESs8VIscEaBGrN+
+rN8tVvLRoH6+G2QiOLn9aoaYmf8dmoAtCZJ8YEYGQNDxdkJOkpgQOnc5sHiNxnPP
+B5gDtyotYQ+m/x9HXBIrS59mp4N5AtaVFLoiZz2WFpBm5c1N34uBuT3AUnSseKaw
+ya6W4EBBEwBvT3oYick08HTFa7S4oHdSB+TZaOlatI3gJ8LtxmzrFslKgxBQLuSe
+RHeOx51xLLRolQHtX3dXH22pMlx2379I/P1ngGJolN+BvBYqK4cUBXVeS+C7Bpyb
+7AZ9WTJUTtzMlDl+1kTYjiinCRXCq80vwChlJspV/NHZ+Mv2JlIP/0uLWroX9TAc
+ZA722M55/91oQ2GYMuYc9aM4KWoBev1MszE4xB2i5SnYSMUOM0410pufiZ49WA9R
+mp+aGXwiO0ymY+4x3ag+Wu32wVVGt+wiwv2V9qmD0y4ct2smjRo+UAxTL+YbVPLQ
+J3F+raKQyXeU2764tAMWWWF8l8W7zYRkX5YTb5WiPWDO5j1Ym7tc5Bx/uuuquZJ8
+A1/KooGsLHX0FyW6uyVm5xWJgJyjxfVq/cAYx9rW7W0r4QmmKx/RMxifeeCFQvFK
+iOaPsFWdg1J7B6CRHPmBuQxgUt7xlg915PW09a2XPmZYXubbAonbn3lGmCb4Ufha
+cjHMhHcl3vHAnPkrs5koqpXMx4fpMXxoOhX72NW+nmDRAX2Eeuv8Yoq1gOGAWoS3
+sGPCMeHrwyqAHKtbgViU14BG8jTk+b6M53LQ3YxMPT+MCDatUBAOVVchIRZUy5WU
+XdwZqpZKc73SfkqK5Udntb6xL3xPwJa7kEwC0PHikKv5szML5aM/EuIqjTj5lmtN
+MR60b8lcrNuirPf98X05NHBMD5HWogmjOih6PRClWocqmG7QXnDCkjr9enWE3ERt
+FOj1Axp8Fh1N7qdd2sVwW/+J3bWiRGluCJ2KjsKbGzkIjV+bFPVevE2eIvgMa0RC
+N57tP+ix8zSSYtEylHGmzazytyU6IlcNc3w83a9rfy0cUQdPkNRw8/tnj0p6WTsG
+hsrYizl6OtZ+V2cCIjs78tNGpai9ZaDchpgc4lOvBzqkpR0WuCoP/CEfrqWtkKWC
+LXXXwB7wkejBGw+OEDpU4oWOv9x9u+mffYyxcMZYb7HsjISL/0KROHCEn0eKFEK1
+8VD1VQmf2GBluvfNXbJzslXjzN5WJbHWSWidfwdMrAy/V/S2tSa8J/DbKIbQbn5h
+PDsKCfrcZhQazc/yvhUM14X1n4xHNdzAKRj7ws8FEOW3yTgrzfvf47MpkVIuX9hr
+jAQ1oJ6J8yzyC71CPQOnIZB3N7PHd/4efPwpfJUg0lsSTMjMIFjwOWK1zep6Ekr2
+w/NV3bPOYNy12fQFDuO4+P1x9OoY9v3fAhabG0MajFecJTut6+B1ys+5V6J62Y6Z
+p+lNBbjQnYcd2yxRZ11xsL8boz6PjKgt12DoCrmCeTqvgF9wuhIPlj97Ghqf5dSD
+pyHtSyuvR0hCrqVGagPGun5mFmBajV9ubVcacfSl4uBYLdvK1S44WhoxVJVrReBM
+T17RIRCp0uVC96aObUTIiW+Z8AjUvzuLEDTK7v4I+hXdXAw2743joXxZbbNHYsvD
+c2u6zRHEM94D5BhTi/wV7WKUehSwLtBXvht+l64iUh8lZNWACrEshqpqbAedk0F1
+vz5XjlqslA/jz447xbEG9+zNZ0sNz/TO7aqtcyazRCMMD9AwOvQX23PTXVFBE3+i
+LOQVUwIb3eom9wB11RKar4puR4zeoES1l4qI0ZD+TBvejpHaYCr0oupyH4T4K++B
+Hxv8cDBj0OIqPwsMDlESi7y6kEOlt+Gx0gNr0CZK9fe8EUvyyMPpyq8o5Cu+LmRy
+eMy3WU9eF0iCFHm8wW3bw60sE6Sq5DEKaGRDH0xYZFcLuiC0ajtL1XoS5s9eE4op
+N+xhaHVqWmEfSqYgftf3NzcpkDiNE+Yx+8wRdZYoGU7L35vqTkbo3WzMpnKEapl/
+IqNG4YoAczbLzEJJ+FqtzQYDAwBu1ruS9/XLYW/vk+EjdsCvagmU86SsmeaAE0me
+sWgGtbwt05AT/OXp33embf07cu/jrPWp22BHB2Sb+zaY8Y4liykI8gw9DmXLq/Hk
+nrtwpmcCLXsLnscmYb0H3aIBZKByTk1w+jjlvf5k4BRDbbep+/qWQg506rKFvD6I
+0lA5GGg9DP7hxIMZnoBO3pxZyAYedTcAHLe73GhL4C98aq7dX0fnSVuoaOhHJCsc
+HJ7zKJ2pnVa1xWMKJn2yfaIqxLrJ10B9eXCXvZfW+YK3OP9rM1BQMLottEJ85RWM
+3FvM7NSmS2K4WJsNHD6STTHecKWylT4B/w2xb0gEGb0ggNesdNXUDYqg+9Yde3vX
+GHNlDbDXFwOlZr5yVYgmTviN8DarJY7gkHetXhYEKOoJ1V9gjOmHzNTSzL6BdlYU
+CSfGunstaoEiGdN+jlLYshYrdli5Sb3otay2zLJJFDZmJWruCjQ/PVLB4Z6Yc+s0
+/ZsdjvFuykt/tES8jy5Mkjpmy3jT49brrqKAQ3aOCSA/E49D+AGK7pEAQVXSaeQr
+G4PTA3Z+Gj2FYSqUThBeToVxOa7ODggLTAh40JLJT81et/A7C/0yOM9Y2ch44i5r
+0gx1RWCFqGqp6RklnApPTKwlLIabsjJnDKhiKlh4LfTKdNa1rUHXcssJGjPq1vaw
+b+JmnjNsC+4fe0p7poXmfARr/BjTx6PqJqmv0jMZXyiWIfDQZipspq0qKSEQ83c9
+c58c5y/XRQ0wAg1eLdki697te0jkO7ki3PuRNEIElv4pByiJTlOGAyLy3Vv0Z0Cy
+tZWWNJGZVCroOMhtWwAymrDDumHwnXRKxU7goznVeC+XX/+Dt3PfA4KQTb55ZUg8
+z34IHx7pIe7fcA0nJQTEFalNLhmaMqgJJuiAlPnOvS4G93tMHRbxzul9/b+64jIW
+xLiOKJKjN384f49fjz0YFijglALuNNoxItIgy2Teaypdc6MMVkbLS1bB7rrR5Ee5
+mHZMwd0srlNOAEcWNqb+H6w7rRoT/xnGJG4C3zjHhqOEsEJO4Wy3vHeCEckPqQNN
+Bk50K4Ff1RKxbR2sT4cpbLnXGJgDrgED94yizo+jSddJYqlZtkP8v7ESmZD0Y0SY
+yAO5WrbzoUaR+eJ/3GzH0yr9VYrYhSzv2WPuymcFflKODkpdXMEnZIEXZSHrqiIE
+OoIx7DnAefV4nTWyzpBoaxvrXUnXfDvuq5BcWos1OLs30JFhyAMGbIixHQ5z+7pq
+lqAP8GoEyN+R8S3OxqSNmQGH+hsXQJLTZe2Dz/1BuZhlf9XpIrDK54dN5FwJv3d0
+x8SamzwHGe0wlcEYwjOQ0sCzrkCu+Obllgz4dfTRQSiBhq6O0D2kpYj1iXtKTJHl
+JD9ld9qGGNUH+XJ7AucTEjsszL7Pn2yz+iHMh8F/Bw4XjEmwGerY9Lmiieo3jXAd
+y/LhsE3PmKFl8etumqcoWfi12clDIwgn68FuEpuD3llc/8KT5xipLv0eS8mFne8+
+tCHhtAJaP/gbFURee72nsFH8F/+ZkUsr+ggCYSDe1B7hRL5PLsY8VbRjy/7QcsYy
+LeySQeuDW/A+qoXGyviV2OUog0KS8DO5cv0Ivo1EmYO062qCSvxR5OWU4ptuRMk9
+efr0UG7Sy1oYZtYf8e2t/c2l0vMJx9v3XgwEAKNV0f8VQiNYSXbzHbyGel1TJhQb
+JevgGjfR+J19Rcuj+6r3KtwI0a9p+w7kVQJLJiaIkMUtiJuk2xpleZJAPpFsXl3H
+DadAfzA+UpdBYb5Y7zIjqzS1WcAbEodHoyS4LuVATIJupXY/CFMsrc/rJEi1NePI
+Sn8yX9Mymlz1ykDqycUENnlYBgHSLXR1XpPNxVJyWm3Qf0R/FiT3Vy275FBfvQzW
+Y/9i7txxT2pOiDdtHxpPMAWy68LV0S08VRYxaap9UbsD70D1moBiHwdQWsUz2Bbv
+VP6o1h9iIcX3ALcEFIVLoaoWW21Gn00crOAc18WxvoHdWAMSlEZ5nHqXQ3zcRZE4
+2425wMFUpLZyGgSlG53SVBA/3vcNvvjWYib4vnzfRx1WNU4hG3FSlYsvqaI3IzTO
+SCkMpYFPsE/3MMFkPODTYZWULkf0eL20a/Ad1CRviNwdju0DFCQx12nQLWwaUQis
+eo+mCgLz7BBlk5UnSGeMF+wEQ7p/oVZWDCdW7fW14gO6yVGuJzyMRAQE0wCnHdVv
+SB4LW80ewwMuA5a/RQhdheY+JAdy99pcUh2nkcQXrth/ANtaNuhBJr7J7aYgCQTQ
+owISqTN0Sy7x9WKfifs/Uerax9OaMV9nAaOEu5kqyxCNlieauTfFb9bIG+N0z+qZ
+yjo+yjxJHOaraxHYQG3PNs9KHfZ2jtzY3J+6i6gWrmOJJlhppJhWCagE24FAKe9H
+VYhnYia3XTd5lsZ8/pwV7rRB/1O2Es9s3UZJMTxYy8CaYyHqfYKlOqz9cYE0MLMV
+QHhjSFB/PonzihlOn5a9t9E3YntbO0o78GLaW/yM1lrfgXX19qAboDBRd4NbLVpL
+Z6awyCHcs58jfzMB0UmpbHf1PIY8AWPEBzmTYoqr6z24aZvxMfWofp/wc3n/JPMz
+E0CDUD6sXzzepuwKyYxaeloArkTbYM7NJ/QqACpiF32vOskAy6FNb0hI37Tzh0DR
+ooYHIA/sf3eo9KHQV8PV9hOmJKPZQEuiqgXXAyzucmqnUVGN0cthotT4m/b4SwTe
+ERAf8pH4vs/NJnFnbv4aVslbceX8i3prY9GgPTvJKC+HwopFOETmRsX0InDK1PrH
+5wlqHmvtjXV+/1YS6wtJXJm6RGB4ebci6kE7YBWRlpOnMyp3a1ees3uwePNMxxqX
+JzgxuJEmpwP4TpZHIiPIg3fpx7P+Bt8DvQKRbnF4FXDTWH+9hZ7i+KKGGrwrPibv
+TXhfUtpjwQUREwyql7supORXOx93r3zah0XWV0qk19UdWv0ckb+TGuVH3NvcaKDc
+fnJ7GRzawoFG6Wq0ApD5Un/hnkkmn7SkE4j5WLPEmX0Ip1Q6T9Ht1ocOKhr6MjmC
+nejnGLwNDE7BY5knl87Uj4YRXTp7O4z6GuYxWIZeuqLqDd9cRkpUe1H/PqXEMWrp
+BUzVLn3zVwjKjgLonwnjRJesObmTR6+JrzHxjU00Eu6JzL7DraPSzsCO17fPUXX1
+hOVWh6B9oc1dQ2gJt0hmbIhOmOOhjKYYjTkXjHrUKHky9q8JD/pxTOaRHBqcsrsP
+DP1HjYt7i36Avwn0WXPgvVUheRO/iUAngv6e/AJR4JDyNTX999scFGz3ynSQ9emM
+ukHJZeRaAm3VXUboFgcGmXE/LtkLNSUHqo1O+8G0CsMuLrRRuKstUdfBvWkcJfau
+75juAUFwK8xYhxxs9H9JLU114M49ruKR79wuJM/NL5VG7L3NuKItgRLDtxBA3CT1
+1rgvvn10N/TS8kCR35SdGKJ9lTj2441lBti2D9ZbphIUNI6N+/AJ5KDmFAAd3aRl
+gbgy/wDrkDY=

@@ -1,27 +1,17 @@
-有时候windows下编辑的shell脚本在linux上执行会出现莫名的错误，转换一下格式即可
-yum -y install dos2unix
-dos2unix *.sh
-
-交互过程使用管道的方式，自动输入yes
-[root@localhost ~]# yes | cp filename new/filename  
-linux默认
-[root@localhost ~]# alias 
-alias cp='cp -i'
-
-\cp 取消alias
-
-source不是直接执行一个文件，而是从一个文本文件里面读命令行，然后执行这些命令
-. test.sh 《=》source test.sh 
-可以使用在shell调用shell
-
-DATE=$(date +%Y%m%d) 
-获取明天的日期
-date -d next-day +%Y%m%d
-获取昨天的日期
-date -d last-day +%Y%m%d
-获取上个月的年和月
-date -d last-month +%Y%m
-获取下个月的年和月
-date -d next-month +%Y%m
-获取明年的年份
-date -d next-year +%Y
+U2FsdGVkX194Bv6lxwcI2N2YwfjXpKcvnXUs3l/iO1KIce2Us6uSJebd72mO2vdY
+3a2IP9pkheivwdXQYFfU8EXJ3JR2wPq8S0szvwVZOIY9x985+AdrcNjtsRsNGBr/
+WuHBPaJO7qgCxuJg/YNyTxF3Y5wOFD1qhJO+gBB3CQHCK5TKItUSCSujTnyQUxJE
+ifvXyKg2vCwLp3VZacNTMlOhHoC5RVug57A9LuixCMN8msy6sq3u4pxgg9p00LMQ
+3EVv8Yrk+kqdO1S2lT5vxQJ7mODDqD4Oud5L5wbOz7KzNHWECc4ZJ13ccGji7Lyl
+4fu3CJsaGIs5BFXtFpaPo8tMbupr09dkGaAgFZfj9HIfVX5vljxjzqj8kobHfboF
+PnKn+VPGOI4/+BMhFJkS98kVXq/b0pzN+mhCVUN2t5ztfBrmJKDlGM4ozENv0Jg+
+RDy/AcG4CRaurgZOFQBp1omPDPqDVZqjJbB1UpqrRXOrPF6ng+KvqSyVvTm20xmo
+TD51KPI1Y9KHJgWz1s4aFyNVzFl0jnTAO0pHghO6YRwvMc39u8E4VTBEU7MSn/zF
+ik4F4zycelA7/CEKY8jdbStTQvjeloUCyUiqAErrjFr67AaiSLGOaWu5ugMLm8mp
+flbX3J0e5NcTWbdVhBr8oBppYMXNDpvBq0gTmbEm+S9mG6UAp9t7e3JvzQ+UAA72
+kM26wRzrLrxE/s8ythWJO2PelqkOhTIakbxQOTrzNMVf/9i+soE/1Jgc53Zdeszk
+O0KXtbXVwFKx+TeUbg6ICMlTQmzWmeFGZSQIZXPuYaKkLPVdRosxIkxazGz3v1mj
+r7fES9Qg6xNPVdG31NuYD08d7fYdht46iJtDJagbEb039krjPrE/sUfeTTTNokkR
+tFeCK3HK2Ps225ByxyAldqtArAnZigu/F+/YSWi2KyEcCNHKbI1rwBtIL35yQHsq
+5P3bC9g45kgtoqA1Qg1DM29WC3Yvc53v5BOkefIx45m8RGJ4jSjnZCwPfkZBwQGT
+AOoNggumLjxCAqHR8O/Vbt/ToWMjWCWM

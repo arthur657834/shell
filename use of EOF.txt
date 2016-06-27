@@ -1,20 +1,6 @@
-重点用法是ex2
-
-ex1:
-cat << EOF
-`ls`
-EOF
-ls作为命令执行，输出的结果作为cat的参数
-
-ex2:
-su - oracle -c "
-export ORACLE_SID=orcl
-sqlplus /nolog <<EOF
-connect / as sysdba
-startup;
-exit;
-EOF"
-sleep 5
-su - oracle -c 
-lsnrctl start 
-
+U2FsdGVkX1+s30iaOGPXrj+HuywEUOQF8lkQhcQ8DESjm1O1eA3fyNRbJXoSTqCD
+Vzy59KDUxx7lgOXgLu/JJWIvBfhgvK6ZO4/24SdJXMhskZpPa+civI29fpOrETRT
+eoJ/GxiXiTwqcrvySApkSrZJWBeSCYmuvQr0a5hfVvfMstVlxWFLTO4QaN3LGxuB
+JAYCrY/nQUMxecAZi7VddvCdq6iehXgiKNMd6er9SCM2REwMOzp0WLtGYyon6c1L
+it3HMM5RTe6SgQwjJDsu0lPjh7XXF1UfzDi6DSPmme9wmLScWZAtl33DQp2ajvhg
+mTR9Q562JCWkPLl4167d6oQqR9rPQPWe/T0mEEULNho=

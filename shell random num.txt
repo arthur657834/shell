@@ -1,25 +1,29 @@
-1.通过时间获得随机数（date)
-date +%s
-#获得时间戳，当前到：1970-01-01 00:00:00 相隔的秒数
-#如果用它做随机数，相同一秒的数据是一样的。在做循环处理，多线程里面基本不能满足要求了。
-
-date +%N
-#获得当前时间的纳秒数据，精确到亿分之一秒。
-#这个相当精确了，就算在多cpu，大量循环里面，同一秒里面，也很难出现相同结果，不过不同时间里面还会有大量重复碰撞
-
-date +%s%N
-#获得当前时间的纳秒数据，精确到亿分之一秒。
-#这个相当精确了，就算在多cpu，大量循环里面，同一秒里面，也很难出现相同结果，不过不同时间里面还会有大量重复碰撞
-
-2.通过内部系统变量($RANDOM)
-echo $RANDOM
-一个小于或等于5位的整数
-
-3.通过系统内部唯一数据生成随机数（/dev/random,urandom)
-head -200 /dev/urandom | cksum | cut -f1 -d" "
-#由于urandom的数据是非常多，不能直接通过cat读取，这里取前200行，其实整个数据都是变化的，取多少也一样是唯一的。
-#cksum 将读取文件内容，生成唯一的表示整型数据，只有文件内容不变，生成结果就不会变化,与php crc函数
-#cut 以” “分割，然后得到分割的第一个字段数据
-
-4.读取linux 的uuid码
-cat /proc/sys/kernel/random/uuid| cksum | cut -f1 -d" "
+U2FsdGVkX1/Q0vXX/d3ty3isJp97lRFVkoECW2Nc1KU2sl3ELc2xIXp+rRlIdGpq
+a6XwbQKeISHKdbfsgeAmJRddMc+UoANs7a256IpAjYa8hiIPk3ZG4z8rNahxr8mU
+Eri2KWI8ejqqZXUQeryl2ojK5wsvuaY0mKrj7Qiw9p3nBh1XPovUk8EyRS81ygBa
+6Lv4OqawNToi3GconZj1S27HIC77/Nbj1MHY7bVeG2b8tti/QaU1V8hVDowXynWy
+R2Bjlku2Y4AxSeffBx9Iaq3w9cXjy0FQ7QvvQoyTShRN7QAjl7SIuHkCtBzWK+JB
+c4C6P01G72fKLvdtY7xX1spSZ+8jssb+OeqIyKXDmtWvjp4rLRcf29QZ6jqNdvOC
+nu7he/nXatY8HfuTpMujS+HdGjVeoBteFKxtZR1soGwe54nWuSmsUbVk0NeUj5gs
+xngwJ9ZKNsChrinJRWXyhUhyFzWk0q7IGtojjlALDy3O42CQcVx41wU1rzxyCzSM
+n7ymt0AbiOOIQpZ12OB0rvobJdeN8flb4ucmhqytfjfBGG4ejemU8T/jwYSB3+L9
+Qtegf+na1cSHAxs2FbSU++fD1tr9WEyrAv57uua6MgqeeMcUOX4uTSUxwZp0a0dm
+winNxGgYovu/ijPcT7sm3ZSVzTUecfUl6vyvYKUyX6yRAlRCH4KTcztgzenGZUN6
+A3jtyRsRWOt+WlaWEB+bAVCz8+R+Wp5YqaWfg4WtnoY7grMwPLheNJoKyG9RGBxv
+POrdBskX3ZKy8oxjfXTDYS5MrKph6pJ7etefpaYhl0zhFi++9qmCYlreMwJTWw7i
+ZtH4TMgFBSU/jjxSku7k1P32sYd8VE67atc9/t+LcAVbF0u0B2LAjxastoiy76Ch
+QqLRN5jmMDgbZKNYE79t8miymQQstSV/pO3LzY/SzjYxL3Qq2mhKTfTl9NAPDn6q
+4nW6yPdTMUiyxNoV9X3g2/1tRk9j00CvhFwrRxIPzirbZSDriLOi6jzjEbFyblsw
+tNvDRznnjavWGDObo62mJ9ZewnPyqoVodPDFqEjUu49hShGqOpP2cYtPcGeU1/oE
+4CpASkCO0x2WbEP7zpybzDarKB2a8j5gTTpclH1hoi/zd7vtgCSnEITz6o4RKY7X
+hryTlN0NUK6iZU9I4w5RcE9HUjS8pJw2UavgBmycQUHJSzM4vVzhFQ4ZrEwFehAO
+BiLKlHvP78AYccYtCLyNrDfXMHB9ORzqvvuNDf8P8hQnhIXD69dFaD3pjv+c+vPo
+z8yKF6jcz5UyG1YGX3tPyYL9xdlD44zyAlDH+cjXxYn0Mn67Zokr7MaepRjtwcS8
+VtJF46nXX4mD1+SsZr9tu/dhiAzfQPFwJ2lnhIydYxUaiW7KEH2dECd3zY3gBckx
+2vgFgpzqaf24W8Q3SZU0LK5f1rmxN0C4W4RlAaHmL1Kn34DLy0f6jg8cFwczyAnn
+sJ60xFrFmuH0VE8dxXDwMIc7sK2QEGy46ow5IPM5ktgVTVQuTRmTjEUQ/4+X6Ysm
+ZueQcjs1vO1rJKfQulyCJnt2LPB4lldUZ0Apr4hWe5ZnMKXSQxZqJ2WdZTXpLB2R
+xMfkC/AxxEfNgkadJUYPXiAIyYmsnmfUwKn3+tAAr6nhO3g0dZ9A/Os0tts2rxrx
+Qw3an+H6G5Ij9qW5Xtn9BdfISRhrD56ubLReLGiggrT05LB9o7UVYnQxbKUeMLJE
+wkmzD0H7JAC8dTvTEbRRslbwq0lgYVjK7yxeiUcDUseh2Bsk3CQ7krkktMeDt7IP
+CV3ripjVtTfSGZYEh5GzM8G3DY/VkOGPbGGAc9lO7lSm4yEpmUaUgejo3+vgzAu/

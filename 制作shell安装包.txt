@@ -1,71 +1,40 @@
-#!/bin/sh
-PATH=/usr/bin:/bin
-umask 022
-md5=4489d98981396d2f8b586206ddda66b4
-pre_install()
-{
-echo "准备安装环境（略）..."
-mkdir ./install.tmp.$$
-}
-check_sum()
-{
-if [ -x /usr/bin/md5sum ]&&[ -f "install.tmp.$$/extract.$$" ]; then
-echo "正在检查md5......"
-sum_tmp=($(/usr/bin/md5sum install.tmp.$$/extract.$$))
-if [ $sum_tmp != $md5 ]; then
-    echo "文件md5不一致，请检查文件完整性,退出!"
-    exit 1
-fi
-else
-    echo "找不到md5sum命令或文件未提取,退出"
-    exit 1
-fi
-}
-extract()
-{
-echo "从脚本中提取文件"
-line_number=`awk '/^__BIN_FILE_BEGIN__/ {print NR + 1; exit 0; }' "$0"` 
-tail -n +$line_number "$0" >./install.tmp.$$/extract.$$
-#tail -n +$line_number "$0" >./install.tmp.$$/extract_tmp.$$
-#base64 -d ./install.tmp.$$/extract_tmp.$$ >./install.tmp.$$/extract.$$
-}
-install()
-{
-    echo "安装中（略）..."
-	unzip 1.zip
-}
-post_install()
-{
-    echo "配置中(略)..." 
-	echo 2 >> 1.txt
-    echo "清理临时文件"
-    rm -rf install.tmp.$$
-}
-
-main()
-{
-    pre_install
-    extract
-    check_sum
-    install
-    post_install
-    exit 0
-}
-
-main
-#这行下面接二进制文件
-__BIN_FILE_BEGIN__
-
-
-最后：
-cat 1.zip >> test.sh
-
-
-二进制文件可以是zip/tar/可执行文件等等，将文件追加到脚本里，例如追加zip文件到脚本里：
-
-cat binary.zip >>shell.sh
-这种方法提取后会改变binary.zip的md5值，校检的时候要用提取后文件的md5（./install.tmp.$$/extract.$$）
-还有一种方法可以不改变binary.zip的md5，就是使用base64将文件加密成文本：
-
-base64 binary.zip >>shell.sh
-在脚本extract()中，使用注释里的命令，网上有很多教程是用uuencode加密的，这个也行，不过很多系统默认是没有安装uuencode，通用性会下降，还是用base64好
+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
+k/0RmhkiXCVmfyvbmiCdbQ==

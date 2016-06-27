@@ -1,64 +1,43 @@
-yum -y install expect
-
-ex1:
-expect autolog.sh
-#!/usr/bin/expect -f
-set timeout 19
-spawn ssh root@192.168.18.167
-expect "password:"
-send "657834\r"
-expect "]*"
-interact //执行完成后保持交互状态，把控制权交给控制台，这个时候就可以手工操作了。如果没有这一句登录完成后会退出，而不是留在远程终端上。如果你只是登录过去执行 
-
-ex2:
-#!/usr/bin/expect -f
-set ipaddr "localhost"
-set passwd "iforgot"
-spawn ssh root@$ipaddr              #spawn   意思是执行命令，expect内命令，shell中不存在
-expect {
-"yes/no" { send "yes\r"; exp_continue} #exp_continue可以继续执行下面的匹配
-"password:" { send "$passwd\r" }
-}
-expect "]# "
-send "touch a.txt\r"                       #意思为发送命令
-send "exit\r"
-expect eof
-exit
-
-ex3:
- for  {set number=1} {$ number <= 100} { incr number +1}
-{
-puts “The number is $ number”
-}
-
-set timeout -1 永不超时
-
-set password [lrange $argv 0 0] <=> [lindex $argv 0]
-set ipaddr [lrange $argv 1 1]
-$argc为命令行参数的个数，$argv0为脚本名字本身，$argv为命令行参数。[lrange $argv 0 0]表示第1个参数，[lrange $argv 0 4]为第一个到第五个参数。与c语言不一样的地方在于，$argv不包含脚本名字本身。
-
- send_user  "Now you can do some operation on this terminal\n"
- 输出一些提示语句
- 
- puts        等同于 echo
- 
- 有时脚本执行不成功可以在代码中加入 sleep 2！！！！！！
- 
- match_max 100000  ##设置缓冲区大小，单位：字节。
- 
- 以下代码都不会 ~_~!
- 
- -exact参数为验证一切输入参数，包括 \n  \r  \t 等字符  expect -exact "\r[K[?1l\r
- 
- expect_user { -re " " {} eof break }
- 在交互模式下，expect_user命令从用户接收消息，当用户输入ctrl+D时结束输入，循环同时结束。
- 
- $expect_out(buffer)
- lappend procs $spawn_id
- 
- 当scp中含有通配符时，可以使用以下这个办法
- spawn bash -c "scp $SRC job@10.1.1.235:/root/*"
- 
- setopt nonomatch
- scp -r abc:/def/\* ./
- 
+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
