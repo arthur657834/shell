@@ -1,29 +1,25 @@
-U2FsdGVkX19JNXxXwRG4V3T18H61m0td6CPmjodhwFHY3jhZeMSBb88tR8py/sy1
-Tgv50jKr+bD+oDTW3Tl0ZV7hChDPTrrSWH4ruAf6eFxa5So5XLOY856mBDJanO4L
-4cueTMvwPaLCNgQVEg40TvPeWPHBkCtOHGwS8RYlW1UMnFK/vi9oIAXTMB78cBzg
-7dun/6msWzcVvfaqLDfHj8uzRspKstRe61XdB6TWy11S8B1Pun+rl8p6aAUMqs0c
-Tekklo9CdM4VGlRgJtCUmR9gNgi+02VYRyO0wEh+eDfml0r7gEokBtUk4etOhKIk
-Pn2p+XTU+CyrcP+6aeXCnTZ3qRY6DQP1/O7cLop2OxYy2U9i8quNAXqKIl72cnVp
-6B1seLtiyowTULQdgtlDl7myblaNNc/59+73Qxp3HlqFSx4Uc9XSbycxGqHJpUGx
-RjIBROxQSxVZQmJs3VzgC7RmX82icZdEqBbsQshKhpGtoN2KqwPXqfJGQ+Z6T5Bm
-I3pNV2JOW20OES9oPsCI92GcI/dmp+/dMt+3EDju0Zcd46S8wDhll9mfw/soRxJK
-1dWgMNwDQTfkWWFWgda497JecTHGIAKK3vej+460ut2EIf5mUwtSfEqA1YwJFZeY
-9qnSbbCljGtikM4NWWGIyFenggPFSev9FHbpGD6qJzBqRYuTFPVLy23z24754BXe
-vd8hynxc0ViZ00sEL7IzRF7obqd3yr1Sd6XCLcDiZrB4qSbVQysMkhjnPDjZLlCQ
-HHjDSthIyQUyIwAFPtSvRrL5ECGfX5agmy9kpHy2GkSVKgferER3Pxn7E3KSeVPA
-jHAb6Gm95gLuQeUIL8nU3c5Jr16TznRnxQEU7dqMHhfP5QCku/W6FYBoMFZftFmP
-+hPvKaeIGZAPEa4cV73HFm4YH9JT005+7twNHCR7OJXaQfd2mz/FpMoXsbw28PBP
-BYU5WRVyVRUi8T+Q5DBD+8Pui0Adpjz75710xsvpUgFWO23FFa6JxA3oG6WJdBNj
-/7ME9rR7VVONLiMBbWh6LBIy7a4S4gFDH2mUqgYwOaKf5zM3ikczQNpny8XeaAdv
-/XfTYNAHg8Es5a6sffviKz1QhOBIi+ZaRQI6YT25YIimbxFp8QwM3eTCZcJ7u98q
-VbiJpd7++bInUwtumjXnBDUSRa7khwhBwduvF1VQk85McVO3WIGl45d2c4TQhqvl
-y5sE3xQRSIAzm1IvKQ+rpV8vayWyvRT508b4aRuecbd09OdVRJwywO39/EFEKi8a
-4GFZIGh/p5kXV0n9ZkCLKHBASV4E1L23B36EZ15CPlPCAuoBMR+FZeT9+zq6wJpv
-koWXKpKBbdWbdifM43X0rkQeSbVeyJpc+9unrKH9vcJreSGRRgEQkOz03h/FSEzK
-tfL08mQ20LEpn/XoQ5lqHOff8iwkXhr+vOptnU+mY9PG64SJOvYD2MnVWCya19IS
-5HvnLNLunRM5r80FJmwqnWIQlduanFGueSNCQcYTTXS60+bu/oZDsMc+J4uCb4A5
-b3FNkzAMuMszbOfneU297PpFTwW6AjWXRSuCfgPbggKROUEiZUI8xYy1fApnRxAG
-vLvKRrVfS5lE30bqU5EyRpM4iNXlyqgQe0DX775g56ktT/Yd1dMF36m1XduP9VKQ
-V9O5i6KARMHVl8Ix2x9aBcXf+eyuDxsnz9EVFD/m5l02iuPULAlAe8pUBcX+uOzO
-ZWS7hBmjMuZsPpo2UyzxLgj4kNKwDiquPOwbEruH7PdxI4MpBo5rNFgR8W0w1jpg
-75qAfhcgfE7c884pij+xWLn2BWTaDdup+lgFuQ/dspsdD1U9nEoXARO+krOfhdnS
+1.通过时间获得随机数（date)
+date +%s
+#获得时间戳，当前到：1970-01-01 00:00:00 相隔的秒数
+#如果用它做随机数，相同一秒的数据是一样的。在做循环处理，多线程里面基本不能满足要求了。
+
+date +%N
+#获得当前时间的纳秒数据，精确到亿分之一秒。
+#这个相当精确了，就算在多cpu，大量循环里面，同一秒里面，也很难出现相同结果，不过不同时间里面还会有大量重复碰撞
+
+date +%s%N
+#获得当前时间的纳秒数据，精确到亿分之一秒。
+#这个相当精确了，就算在多cpu，大量循环里面，同一秒里面，也很难出现相同结果，不过不同时间里面还会有大量重复碰撞
+
+2.通过内部系统变量($RANDOM)
+echo $RANDOM
+一个小于或等于5位的整数
+
+3.通过系统内部唯一数据生成随机数（/dev/random,urandom)
+head -200 /dev/urandom | cksum | cut -f1 -d" "
+#由于urandom的数据是非常多，不能直接通过cat读取，这里取前200行，其实整个数据都是变化的，取多少也一样是唯一的。
+#cksum 将读取文件内容，生成唯一的表示整型数据，只有文件内容不变，生成结果就不会变化,与php crc函数
+#cut 以” “分割，然后得到分割的第一个字段数据
+
+4.读取linux 的uuid码
+cat /proc/sys/kernel/random/uuid| cksum | cut -f1 -d" "

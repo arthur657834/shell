@@ -1,5 +1,19 @@
-U2FsdGVkX1+paoI1gfzCoG6UFZ5R9awnJ7GfPCNiCsBCRXOOfhCP9gdNemeNCyo/
-0pmE8g62UV+rxwfPpv4LMU7VgTeDyJGZ67zXZasONkH629HWp4GxwBitO9Joheqa
-4sMludJW61NxD49AyiIlaBqlCmeOh9rqtC7Zpi3JX9NmwP9jfU1BOupCT5HCR7LW
-zKTS9zZ5+sIlOEG+UPn/+6UjJPQpGj+WK+uP4+PFbZjyx9PjvGPJRzhimhC0SCEn
-Y2XB6bHbmEhaQZk/bDWY70dERUopipTB0pc/qo9c61s=
+ex1:
+#!/bin/bash
+i=0;
+while [ $i -lt 4 ];
+do
+   echo $i;
+   i=`expr $i + 1`;
+   # let i+=1;
+   # ((i++));
+   # i=$[$i+1];
+   # i=$(( $i + 1 ))
+done
+
+ex2:
+#!/bin/bash
+for j in $(seq 1 5)
+do
+  echo $j
+done

@@ -1,6 +1,20 @@
-U2FsdGVkX1+JnPdz3WLBICY2ny8u9zWku793LyWSx5dpxtS8lShpgbHjVlNS980I
-YLqDBq1lgguQbCc89g/1xBu99eubDY1CnPR+twVdrKWQLiMxJYuw99cLckJ+LhrK
-bAACiUSo6HA+CnlcqsNX0WenVxda8MZfBZ0GOp/UEKYEdWS2/NMzQeVmo+cs8BCn
-cKe6VnXxCdDFGePA/GSMYDBSwVMiV0DhsKC87SbdTzl+3+YZ80JCSp7QU4MLheim
-EmjKeqev4Ybwv81TwBEIA1WAK1KEZa7xIcY30d1xLWB4/tHpVFONKiqIb+06WkOW
-pHfmbN2jg4E3VTJBoheyuZpbyg1zRPBVaKTAb904zmo=
+重点用法是ex2
+
+ex1:
+cat << EOF
+`ls`
+EOF
+ls作为命令执行，输出的结果作为cat的参数
+
+ex2:
+su - oracle -c "
+export ORACLE_SID=orcl
+sqlplus /nolog <<EOF
+connect / as sysdba
+startup;
+exit;
+EOF"
+sleep 5
+su - oracle -c 
+lsnrctl start 
+

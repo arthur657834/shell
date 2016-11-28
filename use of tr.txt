@@ -1,16 +1,30 @@
-U2FsdGVkX19WmXHTI4yhfZ4C/Alh2OTbbZk8PU2+jj5AE4AYrNpOeqTbhNfjJ6Vj
-LLXRA+ACa7YA94kNNgIRC0flkhxrlU4fNt9vsiF+A7oa31AmFMNL8IeWhoPlvT3z
-3io+I6D9nmtRDkzdPbcfPSEfLpJ1JAjKtpL4CKrDbgU5r1/4dvpenwinPDl8MitW
-rnTsb15dDyZ2f0JGUKgP6IQ2JQGVcet4T0LKfYtbncX7oLIOlXAhZmSzUqFS0N3t
-DEqMYvlfJGfIgkvXTME5LSEUxqgvUy423jbeZb6DQyJrVMNXYtSYxl+tsqhamVon
-DynQ6t0Up8Y1EBTKOoLWzpxhiOxj5K/e2e0W3/VcmnOU3y2dzv50uueqfdmv0UKZ
-FkkhLCtYN/5+1pTMFNFJ4hjZO+FJ3tTyUoR/6uWpHy/djJ2XVh4ktgs6BBqR+rJ3
-J1FJUFdzsh+dXm+0i7+SCM3lx7l1pHISvK71l0RezU6C+uZFsLuHbLPNpDeR3job
-6rnAF7K5ICVBbAjPkKgEU+00ueBV4X+N2LBLbQL072I+TuR9hWye2DqJON/KGRoq
-9adpBnQeQT6Q5IC3dT00226wv7iLRe8t7Vd/ogi26l0+dzvi9OEFAppT3ijIw5cI
-fDWxUJgvUjMs/74kgPSdnE5QN8Pw+tBUxsGXhnKP6CKiFf/t/1WR3xmKQIpLHhY8
-cNJnD5jGlRCa5idgqCCn9iwE17ROSuGB+JLw8ZrJLbcIfGUE9QR5gbaVw+DQgsEJ
-tS2RCo8RarIWHmgugF0bRfZazeyfldLoB/qBMxvK1G+tL0Ctrta4G4assFT9865G
-cLP7v4s41UVL7wxVGgImyAt1VjWzCsAXloD7bqnbgzQmIQGIzyvxEswmxnRzgyLo
-ZTnTR0gIO5NNH5A3CkuU1pdOW96Gv10b5u3ymEYUEzT9l5lAAvhILBaHB0Aq03km
-z/yucEjK0uKpqhTI2gVMmg==
+1.
+cat 1.txt | tr "abc" "xyz" > new_file
+将文件file中出现的"abc"替换为"xyz"
+
+2.
+cat file | tr [a-z] [A-Z] > new_file
+小写 --> 大写
+
+cat file | tr [A-Z] [a-z] > new_file
+大写 --> 小写
+
+cat file | tr [0-9] [a-j] > new_file
+把文件中的数字0-9替换为a-j
+
+3.
+cat file | tr -d "Snail" > new_file
+删除文件file中出现的"Snail"字符,是在file文件中出现的'S','n','a','i','l'字符都会被删除！而不是紧紧删除出现的"Snail”字符串。
+
+4.
+cat file | tr -s [a-zA-Z] > new_file
+删除“连续着的”重复字母，只保留第一个
+
+5.
+cat file | tr -s "\n" > new_file
+删除空行
+
+cat file | tr -s "\r" "\n" > new_file
+删除Windows文件“造成”的'^M'字符
+
+

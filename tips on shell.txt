@@ -1,17 +1,51 @@
-U2FsdGVkX19btih32RZ1bOt/ZPsfA0mPkrksLZQYhFGMl5S0Ez0vg8LOkxfE00+3
-SnIDMCnfSAEsPDUNaLyBodmVPR8+ibBjkOtwtPhhzCHf2ogfgvn5KcoM0UcIYVNh
-YYTMx6XFjsA5iUhV4TBfk8PxbzWA6WmTDeGQTMFtVNFuMK2hcLOgtDlf6C5crMx5
-QRasnfu9lKtFm3CdENbvIWCqKscJJtZoF8qUuSkIZ1WQ4JbM3DhnM6Y/R8/4WLXA
-6qZ8A7VBLPop5fqxW6IkAeJZ7QC9O3gu064yA8v89p/Cyfj/Ne0SLh44BbTvpm/R
-hN9XblCqaOLRpRctnKKsJzK5bv2JD81hmWd4+8B7njXB2u3QFdohE/p2W3jmTE7h
-LNSp8omDAHKRHkCP2Krf+HxmJJigbVJ4tDQrLPOEG6vtUuLzs5gCrXMCAxUFHyI1
-GmoVVGFloij2Wur9pUSvvJeSvXeUt2gjChB2WcRJgPGuuagxV3Nfa69VNaoL//en
-WZrKx1UlwJwpssSbDrJTe7+jXV0jzl3gr5+cZALXt9Y/2iK8CjqmuTLI2zu4moWB
-L4zHcaOZmg/AlNZ7JF6jDtSZfOD1MEf47xMArX7fK1SzTAZc8uEAwZJ9eBKLUiRU
-6m7tbsplHiLu+LWFEuH7PRCj41zxh8b9dDkh/Tp3mQc3vBgDH3b8JxMvOi9r68LO
-ua6+Ap4u6aGz7j3YWRcT1D3USIdqLFe3FaU06bW7Y9aQEaO7KZnMhGeuXiC3+fCc
-HlULV5qvQq44pdIu/iUYNh3eE1F3msNDkztFLEvOUlVmumg5eS7iueWYibr6wZZZ
-GokiaR/q8cwJJKCrpkPmrzoqa6vfLu7YdRvGMmvlkankQzMMWlyDlapGt+cj1p9s
-hoQpNRX9Q/+UrCZq5A9XIEDaZHqWBRW1fDtXDZg8+kCePbKqhRWPZsZtzPUTzXXy
-lJOxA4dwigFtDnh2TbfHw3B1xhdJuPJErYb3cktLqfdh153t8CrG5f4TRIZLjmVQ
-WC6jMdffgwG9C6DdJa2HGuZfg2nXCLmW
+1.
+有时候windows下编辑的shell脚本在linux上执行会出现莫名的错误，转换一下格式即可
+yum -y install dos2unix
+dos2unix *.sh
+
+2.
+交互过程使用管道的方式，自动输入yes
+[root@localhost ~]# yes | cp filename new/filename  
+linux默认
+
+3.
+[root@localhost ~]# alias 
+alias cp='cp -i'
+
+\cp 取消alias
+
+4.
+source不是直接执行一个文件，而是从一个文本文件里面读命令行，然后执行这些命令
+. test.sh 《=》source test.sh 
+可以使用在shell调用shell
+
+5.
+DATE=$(date +%Y%m%d) 
+获取明天的日期
+date -d next-day +%Y%m%d
+获取昨天的日期
+date -d last-day +%Y%m%d
+获取上个月的年和月
+date -d last-month +%Y%m
+获取下个月的年和月
+date -d next-month +%Y%m
+获取明年的年份
+date -d next-year +%Y
+
+6.
+指定bash
+/usr/bin/env bash
+/bin/bash
+
+7.
+在函数里面，声明一个全局变量可能会污染到其他作用域（尤其在你根本没有注意到这一点的情况下）。所以，对于在函数内声明的变量，请务必记得加上 local 限定词。
+
+8.
+trap func EXIT 允许在脚本结束时调用函数。由于无论正常退出抑或异常退出，所注册的函数都能得以调用，在需要调用一个清理函数的场景下，我都是用它注册清理函数，而不是简单地在脚本结尾调用清理函数。
+
+trap func ERR 允许在运行出错时调用函数。一个常用的技法是，使用全局变量ERROR存储错误信息，然后在注册的函数中根据存储的值完成对应的错误报告。把原本四分五裂的错误处理逻辑集中到一处，有时候会起奇效。不过要记住，程序异常退出时，既会调用EXIT注册的函数，也会调用ERR注册的函数。
+
+
+
+
+

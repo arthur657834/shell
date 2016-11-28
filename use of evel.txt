@@ -1,6 +1,13 @@
-U2FsdGVkX19sKUZF7ji3gAQUlQ9HkRGEbjGu3Hf7EEpcvDEgeFpDkSn4iDlnMkcP
-AZssbpk07kR9+339u/du9hhWxd0wMt0sMuRfRHUKyiwuuJ2YQDWFD7ITNmrlP6q1
-C6gtpFL/l5z+5isF7VnIeZuC0jQdlbTJfM/QRu7KZrlCNe09EZuznplRhVI7Mbcp
-4mnLsHE5msOR8TYX1bUJmSQrl42Gv4HMr3xXHMstmQPcxSzpuuWPxednZ6cOqLih
-Ja+Mal1fZgJ/mhvHZ4/XRvnDopoicLUJ89cB6CQeP+/PJc1gDFNWymNmIbrAbZRr
-LwI7i+t02jQjZMFp+pnKhQ==
+eval:重新运算求出参数的内容
+ex1:
+pipe="|"
+eval ls $pipe wc -l
+​
+ex2:
+test.txt内容：hello shell world!
+
+myfile="cat test.txt"
+
+(1)echo $myfile　　#result:cat test.txt
+
+(2)eval echo $myfile　　#result:hello shell world!

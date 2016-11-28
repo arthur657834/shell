@@ -1,14 +1,43 @@
-U2FsdGVkX19LoMTHF8SYanADKZQO2HTJ4M5UeeQGjRbfpabrrtni89+VhQ132R87
-c8ihEcQCdz2hkAGDGOo1FedTmMvuSkaYpe7h5S6a7jZwncwRgpoeDVcfu8/2guLK
-aW45srajgPB6xO/iMA6dsyd7lAPpwwpJyKf3w9RblI+GywEVGlh4lVshV9ZIZbI4
-z9m/qoaeffVBoiymlLK3dmSz0pjf42X7+uEJU/X3wuuHRFxTGtATi2H/ES22PjdM
-vtOEeW1wg3uchxQNvi6F7JBrU3AzsFauP8nY72Dskv0s8nEAofJoT1CFVmj+aE4/
-OPLdikXLnC8gGxQSZHJx+kzNx2mH/e7VekTYkbbhcCvj9tQSSM4Ld2NvNy4yXjeF
-p4Gy89FqGzWXX3pA0Apr4I412oUzSFRi1xl2TtZDH9GGCi9BtaXOUjblUaBSQyOj
-AomO/qLG8Aq9WN8T+pWpQ0hKTPr6jtp+7E4DSXtuvKbpGduRtJ4gOgKHGprHGQ3F
-x3oEPBeRj17ShKVBpk7WH7flazdOagu8HJWJtJAq/FyGUd4dahN10ZeUSE6exUQK
-SW8mU+rzdT5wd6RO0m3shf79JDGpLPsjjvIx791qknc/FA8a1Tw1jpJgB2o55X0d
-4pTGiUzm4KU8lVuQW90B+kLVHm2omtzNWTm4hOSFyXxgpQ791rNIiWKV6GiTGwsr
-u3VkDb4xYzQmChc4/8/UiQmWLbPQvFtBSicyQmoZ2FxDLypViUpTecHJ7NOF/RTi
-7hzC8mfZj7cP3jjebkAgvg6uUvPFFteSe/iCzF94vbuOW7AVXJMiLiQ6PrJv8qbz
-mJgC1wPLI+6k7vcSWzft9Q==
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
