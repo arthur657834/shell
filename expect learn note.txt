@@ -62,3 +62,142 @@ $argc为命令行参数的个数，$argv0为脚本名字本身，$argv为命令�
  setopt nonomatch
  scp -r abc:/def/\* ./
  
+ex4:
+expect -re "\[(.*)]:"  
+if {$expect_out(1,string)!="/bin/tcsh"} {  
+send "/bin/tcsh" }  
+send " "  
+expect eof 
+
+说明：
+
+（1）第一个expect命令现在使用了-re参数，这个参数表示指定的的字符串是一个正则表达式，而不是一个普通的字符串。对于上面这个例子里是查找一个左方括号字符(其必须进行三次逃逸(escape)，因此有三个符号，因为它对于expect和正则表达时来说都是特殊字符)后面跟有零个或多个字符，最后是一个右方括号字符。这里.*表示表示一个或多个任意字符，将其存放在()中是因为将匹配结果存放在一个变量中以实现随后的对匹配结果的访问。
+
+（2）当发现一个匹配则检查包含在[]中的字符串，查看是否为/bin/tcsh。如果不是则发送/bin/tcsh给chsh命令作为输入，如果是则仅仅发送一个回车符。这个简单的针对具体情况发出不同相响应的小例子说明了expect的强大功能。
+
+（3）在一个正则表达时中，可以在()中包含若干个部分并通过expect_out数组访问它们。各个部分在表达式中从左到右进行编码，从1开始(0包含有整个匹配输出)。()可能会出现嵌套情况，这这种情况下编码从最内层到最外层来进行的。
+
+
+ex5:
+#!/usr/bin/expect  
+# Prompt function with timeout and default.  
+  
+#脚本的第一部分首先是得到运行参数并将其保存到内部变量中  
+set prompt [lindex $argv 0]  
+set def [lindex $argv 1]   
+set response $def  
+set tout [lindex $argv 2]   
+  
+send_tty "$prompt: "  
+#send_tty命令用来实现在终端上显示提示符字串和一个冒号及空格  
+set timeout $tout  
+#set timeout命令设置后面所有的expect命令的等待响应的超时时间为$tout(-l参数用来关闭任何超时设置)。   
+expect " " {  
+set raw $expect_out(buffer)  
+  
+# remove final carriage return  
+set response [string trimright "$raw" " "]  
+}  
+if {"$response" == "} {set response $def}  
+send "$response "  
+  
+# Prompt function with timeout and default.  
+set prompt [lindex $argv 0]  
+set def [lindex $argv 1]   
+set response $def  
+set tout [lindex $argv 2]   
+
+说明：
+
+（1）send_tty命令用来实现在终端上显示提示符字串和一个冒号及空格。
+
+（2）set timeout命令设置后面所有的expect命令的等待响应的超时时间为$tout(-l参数用来关闭任何超时设置)。
+
+（3）然后expect命令就等待输出中出现回车字符。如果在超时之前得到回车符，那么set命令就会将用户输入的内容赋值给变脸raw。随后的命令将用户输入内容最后的回车符号去除以后赋值给变量response。
+
+（4）如果response中内容为空则将response值置为默认值(如果用户在超时以后没有输入或者用户仅仅输入了回车符)。最后send命令将response变量的值加上回车符发送给标准输出。
+
+ex7:
+#!/usr/bin/expect  
+# Write to multiple users from a prepared file  
+# or a message input interactively  
+  
+if {$argc<2} {  
+send_user "usage: $argv0 file user1 user2 ... "  
+exit  
+}   
+#send_user命令用来显示使用帮助信息到父进程(一般为用户的shell)的标准输出。   
+  
+set nofile 0  
+  
+# get filename via the Tcl lindex function  
+set file [lindex $argv 0]  
+if {$file=="i"} {   
+set nofile 1   
+} else {   
+  
+# make sure message file exists  
+if {[file isfile $file]!=1} {   
+send_user "$argv0: file $file not found. "  
+exit }}   
+  
+####################################################  
+#(1)这部分实现处理脚本启动参数，其必须是一个储存要发送的消息的文件名或表示使用交互输入得到发送消的内容的"i"命令。   
+#(2)变量file被设置为脚本的第一个参数的值，是通过一个Tcl函数lindex来实现的，该函数从列表/数组得到一个特定的元素。[]用来实现将函数lindex的返回值作为set命令的参数。   
+#(3)如果脚本的第一个参数是小写的"i"，那么变量nofile被设置为1，否则通过调用Tcl的函数isfile来验证参数指定的文件存在，如果不存在就报错退出。   
+#(4)可以看到这里使用了if命令来实现逻辑判断功能。该命令后面直接跟判断条件，并且执行在判断条件后的{}内的命令。if条件为false时则运行else后的程序块。   
+#######################################################  
+  
+set procs {}  
+# start write processes  
+  
+for {set i 1} {$i<$argc}  
+{incr i} {  
+spawn -noecho write   
+[lindex $argv $i]   
+lappend procs $spawn_id  
+}   
+#######################################################################################  
+#(1)这一部分使用spawn命令来启动write进程实现向用户发送消息.  
+#(2)这里使用了for命令来实现循环控制功能，循环变量首先设置为1，然后因此递增。循环体是最后的{}的内容。  
+#(3)这里我们是用脚本的第二个和随后的参数来spawn一个write命令，并将每个参数作为发送消息的用户名。  
+#(4)lappend命令使用保存每个spawn的进程的进程ID号的内部变量$spawn_id在变量procs中构造了一个进程ID号列表。  
+###################################################################################################  
+  
+if {$nofile==0} {  
+setmesg [open "$file" "r"]  
+} else {  
+send_user "enter message,  
+ending with ^D: " }   
+#最后脚本根据变量nofile的值实现打开消息文件或者提示用户输入要发送的消息。   
+  
+set timeout -1  
+while 1 {  
+if {$nofile==0} {  
+if {[gets $mesg chars] == -1} break  
+set line "$chars "   
+} else {  
+expect_user {  
+-re " " {}  
+eof break }  
+set line $expect_out(buffer) }  
+  
+foreach spawn_id $procs {   
+send $line }  
+sleep 1}  
+exit   
+########################################################  
+#(1)这段代码说明了实际的消息文本是如何通过无限循环while被发送的。  
+#(2)while循环中的if判断消息是如何得到的。在非交互模式下，下一行内容从消息文件中读出，当文件内容结束时while循环也就结束了。(break命令实现终止循环) 。   
+#(3)在交互模式下，expect_user命令从用户接收消息，当用户输入ctrl+D时结束输入，循环同时结束。 两种情况下变量$line都被用来保存下一行消息内容。当是消息文件时，回车会被附加到消息的尾部。   
+#(4)foreach循环遍历spawn的所有进程，这些进程的ID号都保存在列表变量$procs中，实现分别和各个进程通信。send命令组成了foreach的循环体，发送一行消息到当前的write进程。while循环的最后是一个sleep命令，主要是用于处理非交互模式情况下，以确保消息 不会太快的发送给各个write进程。当while循环退出时，expect脚本结束。   
+########################################################  
+
+ex9:
+#!/usr/bin/expect  
+puts 'argv0 : [lindex $argv 0]';  
+puts 'argv1 : [lindex $argv 1]';  
+
+
+
+
