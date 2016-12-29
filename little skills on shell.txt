@@ -331,8 +331,10 @@ echo ${NIL} # Not nil
 
 echo ${TARGET?Not Found} # 当$TARGET不存在时，显示TARGET: Not Found，并结束程序。  
 
-
-
+28.
+命令	        标准输出	错误输出
+>/dev/null 2>&1	丢弃	    丢弃
+2>&1 >/dev/null	丢弃	    屏幕
 
 
 
