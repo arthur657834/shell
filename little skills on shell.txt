@@ -336,5 +336,28 @@ echo ${TARGET?Not Found} # 当$TARGET不存在时，显示TARGET: Not Found，�
 >/dev/null 2>&1	丢弃	    丢弃
 2>&1 >/dev/null	丢弃	    屏幕
 
+29.
+echo for{,,}
+for for for
 
+for i in {1..5}; do echo $i; done
+
+END=5
+for i in `seq 1 $END`; do echo $i; done
+for i in `eval echo {1..$END}`; do echo $i; done
+for ((i=0;i<$END;i++)) do echo $i; done
+
+echo {a..z}
+echo {1..100}
+seq 1 100
+echo {00..09}
+echo {a,b,c}{1,2,3}
+
+30.
+declare -u var
+var="foo bar"
+转大写
+declare -l var
+var="FOO BAR"
+转小写
 

@@ -258,3 +258,30 @@ expect eof
 所以我们可以简单的想象成反引号中： \\ = \
 $()中则不需要考虑\的问题，与我们平常使用的一样：\ = \
 题外话： 反引号是老的用法，$()是新的用法，不管是在学习测试中，还是在实际工作中，$()的用法都是被推荐的。
+
+14：
+#!/bin/bash
+while echo "display current netconfig："
+do
+select vi in "ifconfig -a" "hosts" "netmasks" "quit"
+    do
+            case $vi in
+                    "ifconfig -a")
+                            /sbin/ifconfig -a;;
+                    "hosts")
+                            more hosts;;
+                    "netmasks")
+                            more netmasks;;
+                    "quit")
+                            exit 0;;
+                    *)
+                            continue;;
+            esac
+    
+    break
+    done
+done
+
+15：
+echo $'\t\102\t'
+输出tab+英文字母B+tab
