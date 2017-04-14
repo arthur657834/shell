@@ -82,7 +82,17 @@ $(( a+b*c ))
 `expr 4 \* 5` 
 $[ 4 * 5 ]
 ** 次方运算 2**3=8
-
+((num=0xff)) <==> ((num=16#ff)
+((num=32#ffff))
+((num=64#abc_))
+((num=2#11111111))
+echo "obase=64;123456"|bc
+echo "obase=10;ibase=2;10000" | bc
+echo "10 + 1" | bc
+echo "1.212*3" | bc
+echo "scale=2;3/8" | bc
+echo "10^10" | bc 
+echo "sqrt(100)" | bc
 
 9.数组
 (1) array=(var1 var2 var3 ... varN)
