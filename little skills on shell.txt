@@ -361,3 +361,9 @@ declare -l var
 var="FOO BAR"
 转小写
 
+31.
+对变量迭代求值，二次求值
+var="hello"
+hello="world"
+echo ${!var}
+world
