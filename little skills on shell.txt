@@ -366,4 +366,9 @@ var="FOO BAR"
 var="hello"
 hello="world"
 echo ${!var}
-world
+
+var=1
+var2=var
+echo $(($var2))
+
+eval echo \$$var2
