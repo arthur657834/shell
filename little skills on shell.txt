@@ -372,3 +372,11 @@ var2=var
 echo $(($var2))
 
 eval echo \$$var2
+
+32.
+
+![通配符](./shell_wildcard.jpg)
+
+![元字符](./shell_meta.jpg)
+
+![解析过程](.shell_explain.jpg)
