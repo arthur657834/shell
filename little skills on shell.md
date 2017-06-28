@@ -379,7 +379,7 @@ eval echo \$$var2
 
 ![元字符](./shell_meta.jpg)
 
-![解析过程](.shell_explain.jpg)
+![解析过程](./shell_explain.jpg)
 
 33.
 GNU utility 的默认行为和 POSIX 标准不兼容。为了解决这种不兼容情况，Linux 系统引入了环境变量’POSIXLY_CORRECT’。
