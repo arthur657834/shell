@@ -1,3 +1,4 @@
+```
 1.输出A B 不一致的数据
 #!/bin/bash
 A="aa bb cc dd ee"
@@ -394,3 +395,10 @@ export _POSIX2_VERSION=199209
 unset _POSIX2_VERSION
 
 ‘199209’ 代表 POSIX 1003.2-1992
+
+34.
+cp 1.txt ljtest/
+cd !$ <==> cd ljtest/
+
+!cat 执行上一个带cat的命令
+```
