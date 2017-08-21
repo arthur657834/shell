@@ -401,4 +401,23 @@ cp 1.txt ljtest/
 cd !$ <==> cd ljtest/
 
 !cat 执行上一个带cat的命令
+
+35. 数组做参数
+#!/bin/bash
+
+function showArr(){
+
+    arr=$1
+
+    for i in ${arr[*]}; do
+        echo $i
+    done
+
+}
+
+regions=("GZ" "SH" "BJ")
+
+showArr "${regions[*]}"
 ```
+
+
