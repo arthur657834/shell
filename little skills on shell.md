@@ -418,6 +418,12 @@ function showArr(){
 regions=("GZ" "SH" "BJ")
 
 showArr "${regions[*]}"
+
+36.
+pwd;(cd /etc && ls -a);pwd
+
+(cd /etc && ls -a)
+执行完成回到当前目录
 ```
 
 
