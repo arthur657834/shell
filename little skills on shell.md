@@ -201,6 +201,9 @@ trap "commands" DEBUG
 stty -a
 输出信号列表
 
+stty erase ^H
+终端默认ctrl + backspace，设置以后直接backspace就能删除了
+
 16.
 shell选项设置
 shopt -s cdspell 
@@ -424,6 +427,18 @@ pwd;(cd /etc && ls -a);pwd
 
 (cd /etc && ls -a)
 执行完成回到当前目录
+
+37.
+set -o pipefail 最后一个返回非零的管道命令的返回值
+test.sh
+set -o pipefail
+ls ./a.txt |echo "hi" >/dev/null
+echo $?
+
+sh test.sh ==> 2
+
+注释set -o pipefail
+sh test.sh ==> 0
 ```
 
 
