@@ -439,6 +439,18 @@ sh test.sh ==> 2
 
 注释set -o pipefail
 sh test.sh ==> 0
+
+38.
+
+for((i=1;i<=10;i++))
+for i in $(seq 1 10)
+for i in {1..10} 
+for i in `ls`
+for i in f1 f2 f3 
+for file in /proc/*
+
+list="rootfs usr data data2"  
+for i in $list
 ```
 
 
