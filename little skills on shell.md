@@ -451,6 +451,12 @@ for file in /proc/*
 
 list="rootfs usr data data2"  
 for i in $list
+
+39. 
+远程执行命令
+(echo -e "HEAD / HTTP/1.1\n\n\n\n\n";sleep 2)|telnet www.baidu.com 80 
+(echo "stats")|nc 127.0.0.1 11211
+
 ```
 
 
