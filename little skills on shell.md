@@ -460,6 +460,14 @@ for i in $list
 (echo -e "HEAD / HTTP/1.1\n\n\n\n\n";sleep 2)|telnet www.baidu.com 80 
 (echo "stats")|nc 127.0.0.1 11211
 
+40. 
+不解压查看文件内容
+tar -xzO -f example.tar.gz <dir>/package.json
+解压单独文件
+tar -xvfz example.tar.gz <dir>/package.json
+查看压缩包文件列表
+tar tvf example.tar.gz
+
 ```
 
 
