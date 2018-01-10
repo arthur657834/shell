@@ -88,6 +88,9 @@ echo "Yes ,you are right !!"
 
 7.使用tr命令将文件中的回车转换成空格：
 [root@pps ~]# cat /etc/shells | tr "\n" " " > /tmp/tmp.file
+
+大小写转换
+echo 'HELLO' | tr 'A-Z' 'a-z'
  
 将文件中内容给数组赋值：(碰到第一个回车符之前的内容)
 [root@pps ~]# read -a SHELLS < /tmp/tmp.file
