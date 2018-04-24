@@ -69,3 +69,12 @@ cat binary.zip >>shell.sh
 
 base64 binary.zip >>shell.sh
 在脚本extract()中，使用注释里的命令，网上有很多教程是用uuencode加密的，这个也行，不过很多系统默认是没有安装uuencode，通用性会下降，还是用base64好
+
+
+方法2:
+yum -y install makeself
+makeself ./maketest/ ./maketest.run "SFX installer for program" ./1.sh
+
+[root@250-master opt]# ./maketest.run
+Verifying archive integrity... All good.
+Uncompressing SFX installer for program  100% 
